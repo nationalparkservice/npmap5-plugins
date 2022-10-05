@@ -1,49 +1,17 @@
 <!DOCTYPE html>
 <!-- EXTREMELY SIMPLE maplibregl Map (adapted from https://maplibre.org/maplibre-gl-js-docs/example/simple-map/)-->
 <html>
-
-<head>
-    <meta charset="utf-8" />
-    <title>Basic NPMap5 Usage Example</title>
-    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
-    <script src="https://unpkg.com/maplibre-gl@2.1.6/dist/maplibre-gl.js"></script>
-    <link href="https://unpkg.com/maplibre-gl@2.1.6/dist/maplibre-gl.css" rel="stylesheet" />
-    <script src="../dist/maplibre-gl-overview.min.js"></script>
-
-
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-        }
-
-        #map {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 100%;
-        }
-    </style>
-</head>
-
-<body>
-    <div id="map"></div>
-</body>
-
-<script>
-    const OverviewMapControl = OverviewMap(maplibregl);
-    const map = new maplibregl.Map({
-        container: "map",
-        style: 'https://demotiles.maplibre.org/style.json', // style URL
-        center: [0, 0], // starting position [lng, lat]
-        zoom: 7
-    });
-
-    map.on("style.load", function () {
-        // Possible position values are 'bottom-left', 'bottom-right', 'top-left', 'top-right'
-        map.addControl(new OverviewMapControl({}, 'bottom-right'));
-    });
-    window.mmaapp = map;
-</script>
-
+    <head>
+        <meta charset="utf-8" />
+        <title>Display a map with the popup helpers</title>
+        <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+        <script src="https://unpkg.com/maplibre-gl@2.1.1/dist/maplibre-gl.js"></script>
+        <link href="https://unpkg.com/maplibre-gl@2.1.1/dist/maplibre-gl.css" rel="stylesheet" />
+        <link href="./index.css" rel="stylesheet" />
+    </head>
+    <body>
+        <nav id="menu"></nav>
+        <div id="map"></div>
+    </body>
+    <script type="module" src="./index.js" async defer></script>
 </html>

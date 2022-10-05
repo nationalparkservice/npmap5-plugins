@@ -1,0 +1,113 @@
+{
+    "type": "FeatureCollection",
+    "generator": "overpass-ide",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+    "timestamp": "2022-02-04T15:01:25Z",
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "@id": "node/480139923",
+                "lat": "46.76733333",
+                "lon": "-56.15083333",
+                "name": "Cap Noir",
+                "natural": "cape",
+                "ref": "H",
+                "source": "Décret n° 77-1068 du 12 septembre 1977 définissant les lignes de base pour le département de Saint-Pierre-et-Miquelon",
+                "source_ref": "http://www.legifrance.gouv.fr/affichTexte.do?cidTexte=JORFTEXT000000884111"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -56.1499857,
+                    46.7676493
+                ]
+            },
+            "id": "node/480139923"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "@id": "node/492720932",
+                "name": "Pointe à Henry",
+                "natural": "cape",
+                "place": "locality"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -56.1659485,
+                    46.8157068
+                ]
+            },
+            "id": "node/492720932"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "@id": "node/2608601796",
+                "name": "Pointe de Savoyard",
+                "natural": "cape"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -56.2401352,
+                    46.7641733
+                ]
+            },
+            "id": "node/2608601796"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "@id": "node/2608601797",
+                "name": "Pointe du Diamant",
+                "natural": "cape",
+                "place": "locality"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -56.222297,
+                    46.7515625
+                ]
+            },
+            "id": "node/2608601797"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "@id": "node/3747511538",
+                "name": "Cap à Brossard",
+                "natural": "cape",
+                "place": "locality"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -56.2340284,
+                    46.7681394
+                ]
+            },
+            "id": "node/3747511538"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "@id": "node/3747511539",
+                "name": "Cap à la Vierge",
+                "natural": "cape",
+                "place": "locality"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -56.23283,
+                    46.7689246
+                ]
+            },
+            "id": "node/3747511539"
+        }
+    ]
+}

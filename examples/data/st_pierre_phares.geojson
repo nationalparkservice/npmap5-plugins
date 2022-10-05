@@ -1,0 +1,140 @@
+{
+    "type": "FeatureCollection",
+    "generator": "overpass-ide",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+    "timestamp": "2022-02-04T15:13:39Z",
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "@id": "node/489926480",
+                "disused": "yes",
+                "man_made": "lighthouse",
+                "name": "Phare de la Pointe Leconte",
+                "seamark:landmark:colour": "red",
+                "seamark:type": "landmark"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -56.1545404,
+                    46.7817138
+                ]
+            },
+            "id": "node/489926480"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "@id": "node/490515051",
+                "man_made": "lighthouse",
+                "seamark:beacon_special_purpose:colour": "red;white;red;white",
+                "seamark:beacon_special_purpose:colour_pattern": "horizontal",
+                "seamark:beacon_special_purpose:shape": "tower",
+                "seamark:name": "Pointe aux Canons",
+                "seamark:type": "beacon_special_purpose"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -56.1661138,
+                    46.7813652
+                ]
+            },
+            "id": "node/490515051"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "@id": "node/493903457",
+                "man_made": "lighthouse",
+                "name": "Rocher Petit Saint-Pierre",
+                "name:mk": "Карпа Мал Свети Пјер",
+                "seamark:landmark:colour": "white;red",
+                "seamark:landmark:colour_pattern": "horizontal",
+                "seamark:light:1:category": "directional",
+                "seamark:light:1:character": "Fl",
+                "seamark:light:1:colour": "white",
+                "seamark:light:1:height": "10",
+                "seamark:light:1:period": "2.5",
+                "seamark:light:1:range": "9",
+                "seamark:light:1:sector_end": "059",
+                "seamark:light:1:sector_start": "189",
+                "seamark:light:2:category": "directional",
+                "seamark:light:2:character": "Fl",
+                "seamark:light:2:colour": "red",
+                "seamark:light:2:height": "10",
+                "seamark:light:2:period": "2.5",
+                "seamark:light:2:range": "6",
+                "seamark:light:2:sector_end": "189",
+                "seamark:light:2:sector_start": "059",
+                "seamark:light:reference": "H 0338",
+                "seamark:name": "Rocher Petit St. Pierre",
+                "seamark:type": "landmark",
+                "wikidata": "Q31877501"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -56.1483613,
+                    46.7985992
+                ]
+            },
+            "id": "node/493903457"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "@id": "node/494544967",
+                "height": "17",
+                "man_made": "lighthouse",
+                "name": "Phare de Galantry",
+                "ref:FR:ANFR": "1550076",
+                "seamark:fog_signal:category": "horn",
+                "seamark:fog_signal:group": "2",
+                "seamark:fog_signal:period": "60",
+                "seamark:fog_signal:sequence": "2+(3)+2+(53)",
+                "seamark:light:character": "Fl",
+                "seamark:light:colour": "white",
+                "seamark:light:group": "2",
+                "seamark:light:height": "48",
+                "seamark:light:period": "10",
+                "seamark:light:range": "22",
+                "seamark:light:reference": "H 0332",
+                "seamark:light:sequence": "0.1+(2.4)+0.1+(7.4)",
+                "seamark:name": "Tete de Galantry",
+                "seamark:source": "https://www.admiralty.co.uk/WeeklyNMs/Year%20-%202016/33wknm16_week33_2016.pdf (4216)",
+                "seamark:type": "light_major",
+                "source": "ANFR 08/2019",
+                "wikidata": "Q3378223",
+                "wikipedia": "fr:Phare de Galantry"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -56.1539208,
+                    46.7651261
+                ]
+            },
+            "id": "node/494544967"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "@id": "node/7395201119",
+                "height": "20",
+                "man_made": "lighthouse",
+                "ref:FR:ANFR": "225118",
+                "source": "data.gouv.fr:ANFR - 08/2019"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -56.1539083,
+                    46.7651452
+                ]
+            },
+            "id": "node/7395201119"
+        }
+    ]
+}

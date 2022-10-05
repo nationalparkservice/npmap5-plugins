@@ -6,41 +6,41 @@ import { default as typescript } from 'rollup-plugin-typescript2';
 
 import fs from 'fs';
 
-const pkg = JSON.parse(fs.readFileSync('package.json'));
-const env = process.env.NODE_ENV  || 'development';
+const name = JSON.parse(fs.readFileSync('package.json')).name;
+const env = process.env.NODE_ENV || 'development';
 
 const baseConfig = {
   input: './src/index.ts',
   output: {
-    name: 'OverviewMap'
+    name: 'Interactivity'
   },
   treeshake: env === 'production',
-  plugins: [ typescript()]
+  plugins: [typescript()]
 };
 
 const configs = [{
-  environments: ['production'],
-  output: {
-    format: 'cjs',
-    file: pkg.main,
-  }
-}, {
   environments: ['development', 'production'],
   output: {
     format: 'umd',
-    file: pkg.browser,
+    file: `./dist/${name}.js`
+  }
+}, {
+  environments: ['production'],
+  output: {
+    format: 'umd',
+    file: `./dist/${name}.min.js`,
     sourcemap: true
   },
-  plugins: env === 'production' ? [terser()] : []
+  plugins: [terser()]
 }, {
   environments: ['production'],
   output: {
     format: 'esm',
-    file: pkg.module
+    file: `./dist/${name}.es.js`
   }
 }]
   .filter(config => config.environments === undefined || config.environments.indexOf(env) > -1)
-  .map(config => {delete config.environments; return config;})
+  .map(config => { delete config.environments; return config; })
   .map(config => merge(baseConfig, config));
 
 console.log(configs);

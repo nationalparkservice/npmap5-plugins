@@ -1,7 +1,7 @@
 {
-    "name": "maplibre-gl-overview",
+    "name": "maplibre-gl-interactivity",
     "version": "5.0.1",
-    "description": "Creates an overview map for use with maplibre",
+    "description": "Makes interactivity easier with maplibre",
     "keywords": [
         "maplibre",
         "npmap",
@@ -9,10 +9,10 @@
     ],
     "author": "James McAndrew  <james_mcandrew@partner.nps.gov>",
     "license": "MIT",
-    "main": "dist/maplibre-gl-overview.js",
+    "main": "dist/maplibre-gl-interactivity.js",
     "types": "dist/src/index.d.ts",
-    "module": "dist/maplibre-gl-overview.esm.js",
-    "browser": "dist/maplibre-gl-overview.min.js",
+    "module": "dist/maplibre-gl-interactivity.esm.js",
+    "browser": "dist/maplibre-gl-interactivity.min.js",
     "files": [
         "dist"
     ],
@@ -28,11 +28,12 @@
         "@open-wc/building-rollup": "^2.0.2",
         "@types/geojson": "^7946.0.10",
         "maplibre-gl": "^2.4.0",
+        "rollup": "2.78.1",
         "rollup-plugin-sourcemaps": "^0.6.3",
         "rollup-plugin-terser": "^7.0.2",
-        "rollup-plugin-typescript2": "^0.34.1",
+        "rollup-plugin-typescript2": "^0.33.0",
         "rollup-plugin-web-worker-loader": "^1.6.1",
-        "typescript": "^4.8.4"
+        "typescript": "^4.8.2"
     },
     "dependencies": {}
 }
