@@ -6,8 +6,7 @@ import {
   MapEventType,
   GeoJSONSource,
   ControlPosition,
-  FillLayerSpecification,
-  Map
+  FillLayerSpecification
 } from 'maplibre-gl';
 import { FeatureCollection, Polygon, Position, Feature } from 'geojson';
 
@@ -83,14 +82,15 @@ export default function OverviewMap(mapLibrary: typeof MapLibrary) {
         dragRotate: false,
         touchZoomRotate: false,
         touchPitch: false,
-        minZoom: -2,
-        maxBounds: new mapLibrary.LngLatBounds(
-          new mapLibrary.LngLat(-540, -90),
-          new mapLibrary.LngLat(540, 90)
-        )
+        minZoom: -2
       });
 
       this._overviewMap.on('load', () => {
+        this._overviewMap.transform.latRange = [
+          this._overviewMap.transform.maxValidLatitude * -2,
+          this._overviewMap.transform.maxValidLatitude * 2
+        ];
+
         this._overviewMap.resize();
 
         this._overviewMap.addSource('bboxSource', {
@@ -143,7 +143,6 @@ export default function OverviewMap(mapLibrary: typeof MapLibrary) {
       map.once('style.load', () => this._updateOverview(map));
       this._updateOverview(map);
 
-
       // Update the main map when the overview moves
       this._overviewMap.on('movestart', () => this._updateMain(map));
 
@@ -184,7 +183,7 @@ export default function OverviewMap(mapLibrary: typeof MapLibrary) {
         ];
 
         // If the extent isn't larger that the earth, create a better one
-          if ((bounds.getEast() - bounds.getWest()) < 360 + (Math.abs(90-Math.abs(90-Math.abs(map.getBearing())))) * (map.getPitch() / 60)) {
+        if ((bounds.getEast() - bounds.getWest()) < 360 + (Math.abs(90 - Math.abs(90 - Math.abs(map.getBearing())))) * (map.getPitch() / 60)) {
           extentCoordinates = [
             map.unproject([0, 0]).toArray() as Position,
             map.unproject([map.getCanvas().width / pixelRatio, 0]).toArray() as Position,
@@ -215,7 +214,7 @@ export default function OverviewMap(mapLibrary: typeof MapLibrary) {
         this._extent = geojson;
       }
     }
-    
+
 
     _updateMain(map: MapLibraryMap) {
       // Don't update the main map if it's already moving
@@ -228,9 +227,8 @@ export default function OverviewMap(mapLibrary: typeof MapLibrary) {
       (this._overviewMap.getSource('selectionSource') as GeoJSONSource)?.setData(selectionExtent);
 
       // Used when overzoomed
-      const startPointLngLat = new this._mapLibrary.LngLat(...(selectionExtent.features[0] as Feature<Polygon>).geometry.coordinates[0][0] as [number, number]);
+      //const startPointLngLat = new this._mapLibrary.LngLat(...(selectionExtent.features[0] as Feature<Polygon>).geometry.coordinates[0][0] as [number, number]);
       const overZoomOffset = Math.max(this._overviewMap.getZoom() - this._mainMap.getZoom(), this.options.zoomLevelOffset);
-
 
       const moving = () => {
         const currentSelectionExtentCoordinates = screenCoords
@@ -280,11 +278,11 @@ export default function OverviewMap(mapLibrary: typeof MapLibrary) {
       this._overviewMap.once('moveend', done);
       this._overviewMap.on('move', moving);
     }
+
     _getCenterAtPitch(map: MapLibraryMap, pitch: number, rotation: number) {
       const pixelRatio = map.getPixelRatio();
       const center = map.unproject([(map.getCanvas().width / pixelRatio) / 2, (map.getCanvas().height / pixelRatio) / 2]);
       return center;
-    
     }
   }
 };
