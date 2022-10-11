@@ -1,20 +1,20 @@
 {
-    "name": "maplibre-gl-carto-source",
-    "exportName": "CartoSource",
+    "name": "maplibre-gl-wms-source",
+    "exportName": "WmsSource",
     "version": "0.0.1",
-    "description": "Allows Carto sources to be used with Maplibre as Vector Tiles",
+    "description": "Allows WMS sources to be used with Maplibre as Raster Tiles",
     "keywords": [
         "maplibre",
         "npmap",
         "nps",
-        "carto"
+        "wms"
     ],
     "author": "James McAndrew  <james_mcandrew@partner.nps.gov>",
     "license": "MIT",
-    "main": "dist/maplibre-gl-carto-source.js",
+    "main": "dist/maplibre-gl-wms-source.js",
     "types": "dist/src/index.d.ts",
-    "module": "dist/maplibre-gl-carto-source.esm.js",
-    "browser": "dist/maplibre-gl-carto-source.min.js",
+    "module": "dist/maplibre-gl-wms-source.esm.js",
+    "browser": "dist/maplibre-gl-wms-source.min.js",
     "files": [
         "dist"
     ],

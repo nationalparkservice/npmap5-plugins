@@ -4,11 +4,11 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Basic Carto Layer Usage Example</title>
+    <title>Basic WMS Layer Usage Example</title>
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
     <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
     <link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet" />
-    <script src="../dist/maplibre-gl-carto-sources.min.js"></script>
+    <script src="../dist/maplibre-gl-wms-source.min.js"></script>
 
 
     <style>
@@ -35,28 +35,23 @@
     const map = new maplibregl.Map({
         container: "map",
         style: 'https://demotiles.maplibre.org/style.json', // style URL
-        center: [2.175, 41.4], // starting position [lng, lat]
-        zoom: 12
+        center: [-97, 38.5], // starting position [lng, lat]
+        zoom: 4
     });
-    map.addSourceType('carto', CartoSource(maplibregl), (e) => e && console.error('There was an error', e));
+    map.addSourceType('wms', WmsSource(maplibregl), (e) => e && console.error('There was an error', e));
 
     map.on("style.load", function () {
-        map.addSource('cartoBiking', {
-            'type': 'carto',
-            'user': 'carto-workshops',
-            'table': 'biking_sheet1'           
+        map.addSource('noaaWMS', {
+            'type': 'wms',
+            'url': 'https://idpgis.ncep.noaa.gov/arcgis/services/NWS_Observations/radar_base_reflectivity/MapServer/WMSServer',
+            'layers': [1],
+            'tileSize': 256
         });
 
         map.addLayer({
-            "id": "cartoBikingLayer",
-            "source": "cartoBiking",
-            "source-layer": "layer0",
-            "type": "circle",
-            "paint": {
-                "circle-color": "rgba(255,99,58,1)",
-                "circle-stroke-color": "rgba(255,255,255,1)",
-                "circle-stroke-width": 1
-            }
+            "id": "noaaWMSLayer",
+            "source": "noaaWMS",
+            "type": "raster"
         });
     });
 
