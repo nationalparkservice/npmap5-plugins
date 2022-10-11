@@ -9,10 +9,10 @@ import fs from 'fs';
 const pkg = JSON.parse(fs.readFileSync('package.json'));
 const env = process.env.NODE_ENV  || 'development';
 
-const baseConfig = {
+const baseConfig = {  
   input: './src/index.ts',
   output: {
-    name: 'OverviewMap'
+    name: pkg.exportName
   },
   treeshake: env === 'production',
   plugins: [ typescript()]

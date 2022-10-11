@@ -1,288 +1,177 @@
 import {
-  IControl,
-  Map as MapLibraryMap,
   default as MapLibrary,
-  StyleSpecification,
-  MapEventType,
-  GeoJSONSource,
-  ControlPosition,
-  FillLayerSpecification
+  VectorSourceSpecification,
+  Evented,
+  Source,
+  Dispatcher,
+  VectorTileSource,
 } from 'maplibre-gl';
-import { FeatureCollection, Polygon, Position, Feature } from 'geojson';
 
-const blankGeoJsonFeature = () => ({
-  "type": "FeatureCollection",
-  "features": []
-} as FeatureCollection);
-
-const between = (min: number, value: number, max: number) =>
-  Math.min(max, Math.max(min, value));
-
-
-export type overviewMapOptions = {
-  zoomLevelOffset?: number,
-  watchEvents?: Array<keyof MapEventType>,
-  overlayPaint?: FillLayerSpecification['paint'],
-  selectionPaint?: FillLayerSpecification['paint'],
-  width?: number,
-  height?: number,
-  position?: ControlPosition,
-  style?: string | StyleSpecification,
-  scrollZoom?: boolean
+export type CartoSourceSpecification = Omit<VectorSourceSpecification, 'type' | 'tiles' | 'url' | 'scheme'> & {
+  'type': 'carto',
+  'user': string,
+  'table'?: string,
+  'sql'?: string,
+  'server'?: string
 };
 
-export default function OverviewMap(mapLibrary: typeof MapLibrary) {
-  return class OverviewMapControl implements IControl {
-    _overviewMap: MapLibraryMap;
-    _mainMap: MapLibraryMap | undefined;
-    _container: HTMLElement;
-    _extent: FeatureCollection = blankGeoJsonFeature();
-    _moving: boolean = false;
-    _mapLibrary: typeof MapLibrary;
-    options: Required<overviewMapOptions>;
+// https://carto.com/developers/maps-api/reference/#operation/instantiateAnonymousMap
+export type CartoApiLayerOptions = {
+  /** The SQL request to the user database that will fetch the rendered data.
+   * The SQL request should include the following Mapnik layer configurations:
+   *   geom_column
+   *   interactivity
+   *   attributes
+   * 
+   *   Note: The SQL request may contain substitutions tokens, such as !bbox!, !pixel_width! and !pixel_height!. 
+   *   It is suggested to define the layergroup minzoom and extent variables to prevent errors.
+   *
+   */
+  sql: string,
+  /** A string value, specifying the CartoCSS style version of the CartoCSS attribute. */
+  cartocss_version?: string,
+  /** The name of the column containing the geometry. Default "the_geom_webmercator" */
+  geom_column?: string
+  /** Defines the type of column as either geometry or raster. Default "geometry" */
+  geom_type?: "geometry" | "raster",
+  /**
+   * Defines the raster band (this option is only applicable when the geom_type=raster.)
+   * 
+   * Note: If the default, or no value is specified, raster bands are interpreted as either:
+   * 
+   * grayscale (for single bands)
+   * RGB (for 3 bands)
+   * RGBA (for 4 bands).
+   */
+  raster_band?: string,
+  /** The spatial reference identifier for the geometry column. Default "3857" */
+  srid: string,
+  /** A string of values containing the tables that the Mapnik layer SQL configuration is using. This value is used if there is a problem guessing what the affected tables are from the SQL configuration (i.e. when using PL/SQL functions). */
+  affected_tables?: string,
+  /** A string of values that contains the fields rendered inside grid.json. All the parameters should be exposed as a result of executing the Mapnik layer SQL query. */
+  interactivity?: string,
+  /** The id and column values returned by the Mapnik attributes service. 
+   * (This option is disabled if no configuration is defined). 
+   * You must specify this value as part of the Mapnik layer SQL configuration.
+ */
+  attributes?: [
+    {
+      'id': string,
+      'columms': string
+    }
+  ]
+};
+export type CartoApiLayerObj = {
+  /** 
+    mapnik - rasterized tiles
+    cartodb - an alias for mapnik (for backward compatibility)
+    torque - render vector tiles in torque format
+    http - load tiles over HTTP
+    plain - color or background image url
+    named - use a Named Map as a layer
+  */
+  type: "mapnik" | "cartodb" | "torque" | "http" | "plain" | "named",
+  options: CartoApiLayerOptions
+}
+export type CartoApiV1CreateMap = {
+  /** Spec version to use for validation. */
+  version?: string,
+  /**   The default map extent for the map projection. Note: Currently, only webmercator is supported. */
+  extent?: string,
+  /**   The spatial reference identifier for the map. */
+  srid?: string,
+  /**   The maximum zoom level for your map. A request beyond the defined maxzoom returns a 404 error. */
+  maxzoom?: string,
+  /** The minimum zoom level for your map. A request beyond the defined minzoom returns a 404 error. */
+  minzoom?: string,
+  layers: Array<CartoApiLayerObj>
+};
 
-    constructor(options: overviewMapOptions) {
 
-      // Create a container for the overview map
-      this._container = document.createElement("div");
+const cartoDefaults = {
+  'type': 'carto',
+  'server': 'carto.com'
+} as CartoSourceSpecification;
 
-      this._container.className = "maplibregl-ctrl-overview-map maplibregl-ctrl";
-      this._container.addEventListener("contextmenu", (e) => e.preventDefault());
+export default function CartoSource(mapLibrary: typeof MapLibrary, options: Partial<CartoSourceSpecification> = cartoDefaults) {
+  return class CartoSource extends mapLibrary['VectorTileSource'] implements Source {
+    _originalSource: CartoSourceSpecification;
 
-      // options
-      const defaultOptions = {
-        zoomLevelOffset: -5,
-        watchEvents: ['move', 'rotate', 'pitch'] as Array<keyof MapEventType>,
-        overlayPaint: {
-          'fill-color': '#d29700',
-          'fill-opacity': 0.75
-        },
-        selectionPaint: {
-          'fill-color': '#d29700',
-          'fill-opacity': 0.25,
-          'fill-outline-color': '#000000'
-        },
-        width: 150,
-        height: 150,
-        style: ''
-      } as Required<overviewMapOptions>;
+    constructor(id: string, originalSource: CartoSourceSpecification, dispatcher: Dispatcher, eventedParent: Evented) {
+      super(id, { 'type': 'vector', 'collectResourceTiming': true }, dispatcher, eventedParent);
 
-      this.options = { ...defaultOptions, ...options };
-      this._mapLibrary = mapLibrary;
-      this._container.setAttribute('style', `width: ${this.options.width}px; height: ${this.options.height}px;`);
+      // Set the defaults
+      this.id = id;
+      this._originalSource = { ...options, ...originalSource };
 
-      // Create the map for the overview
-      this._overviewMap = new mapLibrary.Map({
-        container: this._container,
-        style: this.options.style,
-        interactive: true,
-        pitchWithRotate: false,
-        attributionControl: false,
-        boxZoom: false,
-        dragRotate: false,
-        touchZoomRotate: false,
-        touchPitch: false,
-        minZoom: -2
+      // If there is not a SQL query, but there's a table, make the query 'SELECT * FROM {TABLE}'
+      if (this._originalSource.table && !this._originalSource.sql) {
+        this._originalSource.sql = `SELECT * FROM "${this._originalSource.user}"."${this._originalSource.table}";`;
+      } else if (this._originalSource.sql && !this._originalSource.table) {
+        this._originalSource.table = undefined;
+      } else if (!this._originalSource.sql && !this._originalSource.table) {
+        throw new Error(`${this._originalSource.type} requires either a sql or table parameter`);
+      }
+    }
+
+    load() {
+      this.convertToSource().then(convertedSource => {
+        this.url = convertedSource.url; //
+        this.tiles = convertedSource.tiles; //?: string[] | undefined;
+        this.bounds = convertedSource.bounds; //?: [number, number, number, number] | undefined;
+        this.scheme = convertedSource.scheme; //?: "xyz" | "tms" | undefined;
+        this.minzoom = convertedSource.minzoom; //?: number | undefined;
+        this.maxzoom = convertedSource.maxzoom; //?: number | undefined;
+        this.promoteId = convertedSource.promoteId; //?: PromoteIdSpecification | undefined;
+        super.load();
       });
+    }
 
-      this._overviewMap.on('load', () => {
-        this._overviewMap.transform.latRange = [
-          this._overviewMap.transform.maxValidLatitude * -2,
-          this._overviewMap.transform.maxValidLatitude * 2
-        ];
-
-        this._overviewMap.resize();
-
-        this._overviewMap.addSource('bboxSource', {
-          'type': 'geojson',
-          'data': this._extent
-        });
-        this._overviewMap.addSource('selectionSource', {
-          'type': 'geojson',
-          'data': blankGeoJsonFeature()
-        });
-
-        // Add a new layer to visualize the polygon.
-        this._overviewMap.addLayer({
-          'id': 'bboxLayer',
-          'type': 'fill',
-          'source': 'bboxSource',
-          'layout': {},
-          'paint': this.options.overlayPaint
-        });
-        this._overviewMap.addLayer({
-          'id': 'selectionFillLayer',
-          'type': 'fill',
-          'source': 'selectionSource',
-          'layout': {},
-          'paint': this.options.selectionPaint
-        });
-        this._overviewMap.addLayer({
-          'id': 'selectionLineLayer',
-          'type': 'line',
-          'source': 'selectionSource',
-          'layout': {},
-          'paint': {
-            'line-color': this.options.selectionPaint['fill-outline-color'] || '#000000',
-            'line-width': 2
+    async convertToSource() {
+      let cartoMapConfig = {
+        version: '1.3.0',
+        layers: [{
+          'type': 'mapnik',
+          'options': {
+            'sql': this._originalSource.sql,
+            'srid': '3857'
           }
-        });
-      });
+        }]
+      } as CartoApiV1CreateMap;
 
-    }
+      if (this._originalSource.minzoom !== undefined) cartoMapConfig.minzoom = this._originalSource.minzoom.toString();
+      if (this._originalSource.maxzoom !== undefined) cartoMapConfig.maxzoom = this._originalSource.maxzoom.toString();
+      //if (this.source.bounds) {
+      // TODO maplibre only support 4326 and carto wants 3857
+      //cartoMapConfig.extent = JSON.stringify(this.source.bounds);
+      //}
 
-    onAdd(map: MapLibraryMap) {
-      this._mainMap = map;
+      let url = new URL(`https://${this._originalSource.server}/user/${this._originalSource.user}/api/v1/map`);
 
-      if (this.options.style === '') {
-        this._overviewMap.setStyle(this._mainMap.style.serialize());
+      // carto.com uses a different format than on-prem
+      if (this._originalSource.server === 'carto.com') {
+        url = new URL(`https://${this._originalSource.user}.${this._originalSource.server}/api/v1/map`);
       }
 
-      // Update the overview map when the main map moves
-      this.options.watchEvents.forEach(event => map.on(event, () => this._updateOverview(map)));
-      map.once('style.load', () => this._updateOverview(map));
-      this._updateOverview(map);
+      url.searchParams.append('config', JSON.stringify(cartoMapConfig));
 
-      // Update the main map when the overview moves
-      this._overviewMap.on('movestart', () => this._updateMain(map));
-
-      return this._container;
-    }
-
-    onRemove() {
-      if (this._mainMap) {
-        //this._overviewMap.off('movestart', () => this._mainMap && this._moveOverview(this._mainMap));
-        this.options.watchEvents
-          .forEach(event => this._mainMap && this._mainMap
-            .off(event, () => this._updateOverview(this._mainMap as MapLibraryMap))
-          );
-        this._overviewMap.off('movestart', () => this._updateMain(this._mainMap as MapLibraryMap));
+      let tileUrls = [] as Array<string>;
+      try {
+        const resp = await fetch(url);
+        const json = await resp.json();
+        tileUrls = json.metadata.tilejson.vector.tiles as Array<string>;
+      } catch (e) {
+        throw new Error(`${this._originalSource.type} source failed to load`);
       }
 
-      if (this.options.style === '') {
-        this._overviewMap.setStyle('');
-      }
-      this._mainMap = undefined;
-    }
-
-    _updateOverview(map: MapLibraryMap) {
-      // Don't update the overview map if it's already moving
-      if (this._moving || !this._overviewMap) return;
-      const pixelRatio = map.getPixelRatio();
-      const geojson = blankGeoJsonFeature();
-
-      if (map) {
-        const center = map.unproject([(map.getCanvas().width / pixelRatio) / 2, (map.getCanvas().height / pixelRatio) / 2])
-        const bounds = map.getBounds();
-        let extentCoordinates = [
-          [-179.99, bounds.getNorth()] as Position,
-          [179.99, bounds.getNorth()] as Position,
-          [179.99, bounds.getSouth()] as Position,
-          [-179.99, bounds.getSouth()] as Position,
-          [-179.99, bounds.getNorth()] as Position,
-        ];
-
-        // If the extent isn't larger that the earth, create a better one
-        if ((bounds.getEast() - bounds.getWest()) < 360 + (Math.abs(90 - Math.abs(90 - Math.abs(map.getBearing())))) * (map.getPitch() / 60)) {
-          extentCoordinates = [
-            map.unproject([0, 0]).toArray() as Position,
-            map.unproject([map.getCanvas().width / pixelRatio, 0]).toArray() as Position,
-            map.unproject([map.getCanvas().width / pixelRatio, map.getCanvas().height / pixelRatio]).toArray() as Position,
-            map.unproject([0, map.getCanvas().height / pixelRatio]).toArray() as Position,
-            map.unproject([0, 0]).toArray() as Position
-          ];
-        }
-        geojson.features.push({
-          "type": "Feature",
-          "properties": {},
-          "geometry": {
-            "type": "Polygon",
-            "coordinates": [extentCoordinates]
-          }
-        } as Feature<Polygon>);
-
-        const newOverviewZoom = between(
-          this._overviewMap.getMinZoom(),
-          map.getZoom() + this.options.zoomLevelOffset,
-          this._overviewMap.getMaxZoom()
-        );
-        this._moving = true;
-        this._overviewMap.setCenter(center);
-        this._overviewMap.setZoom(newOverviewZoom);
-        this._moving = false;
-        (this._overviewMap.getSource('bboxSource') as GeoJSONSource)?.setData(geojson);
-        this._extent = geojson;
-      }
-    }
-
-
-    _updateMain(map: MapLibraryMap) {
-      // Don't update the main map if it's already moving
-      if (this._moving || !this._mainMap) return;
-
-      const selectionExtent: FeatureCollection = JSON.parse(JSON.stringify(this._extent));
-      const screenCoords = ((selectionExtent.features[0]) as Feature<Polygon>).geometry.coordinates[0].map(
-        pos => this._overviewMap.project(pos as [number, number])
-      );
-      (this._overviewMap.getSource('selectionSource') as GeoJSONSource)?.setData(selectionExtent);
-
-      // Used when overzoomed
-      //const startPointLngLat = new this._mapLibrary.LngLat(...(selectionExtent.features[0] as Feature<Polygon>).geometry.coordinates[0][0] as [number, number]);
-      const overZoomOffset = Math.max(this._overviewMap.getZoom() - this._mainMap.getZoom(), this.options.zoomLevelOffset);
-
-      const moving = () => {
-        const currentSelectionExtentCoordinates = screenCoords
-          .map(pos => this._overviewMap.unproject([pos.x, pos.y]))
-          .map(xy => [xy.lng, xy.lat]);
-        const geojson = blankGeoJsonFeature();
-        geojson.features.push({
-          "type": "Feature",
-          "properties": {},
-          "geometry": {
-            "type": "Polygon",
-            "coordinates": [currentSelectionExtentCoordinates]
-          }
-        });
-        (this._overviewMap.getSource('selectionSource') as GeoJSONSource)?.setData(geojson);
-      };
-
-      const done = () => {
-        this._overviewMap.off('move', moving);
-        this._overviewMap.off('moveend', done);
-        if (this._mainMap) {
-
-          // Deal with the overview map being outside of its minZoom (TODO or max zoom)
-          let newCenter = this._overviewMap.getCenter();
-
-          const newMainZoom = between(
-            this._mainMap.getMinZoom(),
-            this._overviewMap.getZoom() - overZoomOffset,
-            this._mainMap.getMaxZoom()
-          );
-
-          this._moving = true;
-          this._mainMap.once('moveend', (e: any) => e.doneEvents && e.doneEvents());
-          this._mainMap.easeTo({
-            center: newCenter,
-            zoom: newMainZoom
-          }, {
-            doneEvents: () => {
-              (this._overviewMap.getSource('selectionSource') as GeoJSONSource)?.setData(blankGeoJsonFeature());
-              this._moving = false;
-              this._updateOverview(map);
-            }
-          });
+      let maplibrarySource: VectorSourceSpecification = {
+        ...this._originalSource,
+        ...{
+          'type': 'vector',
+          'tiles': tileUrls
         }
       };
-
-      this._overviewMap.once('moveend', done);
-      this._overviewMap.on('move', moving);
+      return maplibrarySource as Required<VectorSourceSpecification>;
     }
-
-    _getCenterAtPitch(map: MapLibraryMap, pitch: number, rotation: number) {
-      const pixelRatio = map.getPixelRatio();
-      const center = map.unproject([(map.getCanvas().width / pixelRatio) / 2, (map.getCanvas().height / pixelRatio) / 2]);
-      return center;
-    }
-  }
+  };
 };

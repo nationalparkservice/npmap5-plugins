@@ -4,11 +4,11 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Basic NPMap5 Usage Example</title>
+    <title>Basic Carto Layer Usage Example</title>
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
     <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
     <link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet" />
-    <script src="../dist/maplibre-gl-overview.min.js"></script>
+    <script src="../dist/maplibre-gl-carto-sources.min.js"></script>
 
 
     <style>
@@ -16,6 +16,7 @@
             margin: 0;
             padding: 0;
         }
+
         #map {
             position: absolute;
             top: 0;
@@ -30,19 +31,35 @@
 </body>
 
 <script>
-    const OverviewMapControl = OverviewMap(maplibregl);
+
     const map = new maplibregl.Map({
         container: "map",
         style: 'https://demotiles.maplibre.org/style.json', // style URL
-        center: [0, 0], // starting position [lng, lat]
-        zoom: 7
+        center: [2.175, 41.4], // starting position [lng, lat]
+        zoom: 12
     });
+    map.addSourceType('carto', CartoSource(maplibregl), (e) => e && console.error('There was an error', e));
 
     map.on("style.load", function () {
-        // Possible position values are 'bottom-left', 'bottom-right', 'top-left', 'top-right'
-        map.addControl(new OverviewMapControl({}, 'bottom-right'));
+        map.addSource('cartoBiking', {
+            'type': 'carto',
+            'user': 'carto-workshops',
+            'table': 'biking_sheet1'           
+        });
+
+        map.addLayer({
+            "id": "cartoBikingLayer",
+            "source": "cartoBiking",
+            "source-layer": "layer0",
+            "type": "circle",
+            "paint": {
+                "circle-color": "rgba(255,99,58,1)",
+                "circle-stroke-color": "rgba(255,255,255,1)",
+                "circle-stroke-width": 1
+            }
+        });
     });
-    window.mmaapp = map;
+
 </script>
 
 </html>
