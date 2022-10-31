@@ -23,6 +23,8 @@
         "build-dev": "NODE_ENV=development npm run build",
         "watch-dev": "NODE_ENV=development npm run watch",
         "build-prod": "NODE_ENV=production npm run build",
+        "documentation": "documentation readme --section API src/index.ts",
+        "serve": "npx serve",
         "build": "npm run clean && rollup -c rollup.config.js",
         "watch": "rollup -c rollup.config.js --watch"
     },
@@ -37,6 +39,7 @@
         "typescript": "^4.8.4"
     },
     "dependencies": {
+        "documentation": "^14.0.0",
         "rollup-plugin-import-css": "^3.0.3"
     }
 }
