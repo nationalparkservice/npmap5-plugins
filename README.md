@@ -68,7 +68,8 @@ map.addSource('noaaWMS', {
     'url': 'https://idpgis.ncep.noaa.gov/arcgis/services/NWS_Observations/NOHRSC_Snow_Analysis/MapServer/WMSServer',
 //    'layers': [0, 3];  // "Snow Depth", determine this by inspecting the XML
     'layers': [4, 7],    // "Snow Water Equivalent", determine this by inspecting the XML
-    'tileSize': 256
+    'tileSize': 256,
+    'format': 'png'
 });
 
 // Adds a MapLibre style layer to the map's style.
