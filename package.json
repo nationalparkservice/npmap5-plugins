@@ -1,20 +1,20 @@
 {
-    "name": "maplibre-gl-wms-source",
-    "exportName": "WmsSource",
+    "name": "maplibre-gl-arcgis-rest-source",
+    "exportName": "ArcGisRestSource",
     "version": "0.0.1",
-    "description": "Allows WMS sources to be used with Maplibre as Raster Tiles",
+    "description": "Allows ArcGIS REST sources to be used with Maplibre as Raster Tiles",
     "keywords": [
         "maplibre",
         "npmap",
         "nps",
-        "wms"
+        "arcgis-rest"
     ],
     "author": "James McAndrew  <james_mcandrew@partner.nps.gov>",
     "license": "MIT",
-    "main": "dist/maplibre-gl-wms-source.js",
+    "main": "dist/maplibre-gl-arcgis-rest-source.js",
     "types": "dist/src/index.d.ts",
-    "module": "dist/maplibre-gl-wms-source.esm.js",
-    "browser": "dist/maplibre-gl-wms-source.min.js",
+    "module": "dist/maplibre-gl-arcgis-rest-source.esm.js",
+    "browser": "dist/maplibre-gl-arcgis-rest-source.min.js",
     "files": [
         "dist"
     ],
@@ -28,7 +28,12 @@
     },
     "devDependencies": {
         "@open-wc/building-rollup": "^2.0.2",
+        "@rollup/plugin-commonjs": "^23.0.2",
+        "@rollup/plugin-node-resolve": "^15.0.1",
+        "@types/arcgis-rest-api": "^10.4.5",
         "@types/geojson": "^7946.0.10",
+        "@types/geojson-vt": "^3.2.0",
+        "@types/terraformer__arcgis": "^2.0.2",
         "maplibre-gl": "^2.4.0",
         "rollup-plugin-sourcemaps": "^0.6.3",
         "rollup-plugin-terser": "^7.0.2",
@@ -37,6 +42,7 @@
         "typescript": "^4.8.4"
     },
     "dependencies": {
-        "rollup-plugin-import-css": "^3.0.3"
+        "@terraformer/arcgis": "^2.1.2",
+        "rollup-plugin-import-css": "^3.1.0"
     }
 }

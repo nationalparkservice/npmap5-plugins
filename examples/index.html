@@ -1,60 +1,17 @@
 <!DOCTYPE html>
 <!-- EXTREMELY SIMPLE maplibregl Map (adapted from https://maplibre.org/maplibre-gl-js-docs/example/simple-map/)-->
 <html>
-
-<head>
-    <meta charset="utf-8" />
-    <title>Basic WMS Layer Usage Example</title>
-    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
-    <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
-    <link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet" />
-    <script src="../dist/maplibre-gl-wms-source.min.js"></script>
-
-
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-        }
-
-        #map {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 100%;
-        }
-    </style>
-</head>
-
-<body>
-    <div id="map"></div>
-</body>
-
-<script>
-
-    const map = new maplibregl.Map({
-        container: "map",
-        style: 'https://demotiles.maplibre.org/style.json', // style URL
-        center: [-97, 38.5], // starting position [lng, lat]
-        zoom: 4
-    });
-    map.addSourceType('wms', WmsSource(maplibregl), (e) => e && console.error('There was an error', e));
-
-    map.on("style.load", function () {
-        map.addSource('noaaWMS', {
-            'type': 'wms',
-            'url': 'https://idpgis.ncep.noaa.gov/arcgis/services/NWS_Observations/radar_base_reflectivity/MapServer/WMSServer',
-            'layers': [1],
-            'tileSize': 256
-        });
-
-        map.addLayer({
-            "id": "noaaWMSLayer",
-            "source": "noaaWMS",
-            "type": "raster"
-        });
-    });
-
-</script>
-
+    <head>
+        <meta charset="utf-8" />
+        <title>Display a map with an ArcGIS Source and Layer</title>
+        <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+        <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
+        <link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet" />
+        <link href="./index.css" rel="stylesheet" />
+    </head>
+    <body>
+        <nav id="menu"></nav>
+        <div id="map"></div>
+    </body>
+    <script type="module" src="./index.js" async defer></script>
 </html>

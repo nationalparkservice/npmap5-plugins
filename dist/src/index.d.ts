@@ -1,79 +1,73 @@
-import { default as MapLibrary, Evented, Dispatcher, RasterSourceSpecification } from 'maplibre-gl';
-export declare type WmsSourceSpecification = Omit<RasterSourceSpecification, 'type' | 'tiles' | 'url' | 'scheme'> & {
-    'url': string;
-    'layers': Array<string | number>;
-    'transparent'?: boolean;
-    tileSize?: number;
-};
-export declare type WmsApiLayerOptions = {
-    /**   Service name. Value is WMS. */
-    service: 'WMS';
-    /** Service version. Value is one of 1.0.0, 1.1.0, 1.1.1, 1.3.0. */
-    version: '1.0.0' | '1.1.0' | '1.1.1';
-    /**   Operation name. Value is GetMap. */
-    request: 'GetMap';
-    /**   Layers to display on map.Value is a comma - separated list of layer names. */
-    layers: string;
-    /** Styles in which layers are to be rendered.Value is a comma - separated list of style names,
-     * or empty if default styling is required.Style names may be empty in the list,
-     * to use default layer styling. */
-    styles: string;
-    /** Spatial Reference System for map output.Value is in form EPSG: nnn. */
-    srs: string;
-    /**   Bounding box for map extent.Value is minx, miny, maxx, maxy in units of the SRS. */
-    bbox: string;
-    /** Width of map output, in pixels. */
-    width: string;
-    /** Height of map output, in pixels. */
-    height: string;
-    /** Format for the map output. */
-    format: string;
-    /** Whether the map background should be transparent.Values are true or false.Default is false */
-    transparent?: boolean;
-    /**  Background color for the map image.Value is in the form RRGGBB.Default is FFFFFF(white). */
-    bgcolor?: string;
-    /** Format in which to report exceptions.Default value is application / vnd.ogc.se_xml. */
-    exceptions?: string;
-    /**   Time value or range for map data. */
-    time?: string;
-    /**   A URL referencing a StyledLayerDescriptor XML file which controls or enhances map layers and styling */
-    sld?: string;
-    /** A URL - encoded StyledLayerDescriptor XML document which controls or enhances map layers and styling */
-    sld_body?: string;
-};
-export declare type WmsApiLayerOptions130 = Omit<WmsApiLayerOptions, 'version' | 'srs'> & {
-    version: '1.3.0';
-    crs: string;
-};
-export default function WmsSource(mapLibrary: typeof MapLibrary): {
-    new (id: string, originalSource: WmsSourceSpecification, dispatcher: Dispatcher, eventedParent: Evented): {
-        _originalSource: WmsSourceSpecification;
-        load(): void;
-        convertToSource(): Promise<Required<RasterSourceSpecification>>;
-        type: "raster" | "raster-dem";
+import { default as MapLibrary, Dispatcher, Evented, Map as MapElement, Cancelable, Callback, Tile } from 'maplibre-gl';
+import { ArcGisRestSpecification, esriFeatureServiceResponse, esriMapServiceResponse, esriRequestParameters } from './types/arcgisRestTypes';
+import { Feature, GeoJsonProperties, Geometry } from 'geojson';
+export default function ArcGisRestSource(mapLibrary: typeof MapLibrary): {
+    new (id: string, originalSource: ArcGisRestSpecification, dispatcher: Dispatcher, eventedParent: Evented): {
+        _originalSource: ArcGisRestSpecification;
+        _quantizedQuery: boolean;
+        _requestFormat: 'json' | 'pbf';
+        _geometriesAtZoom: {
+            subClass: any;
+            worker: Worker;
+            handlers: Map<string, {
+                res: (value: any) => void;
+                rej: (value: Error) => void;
+            }>;
+            initId: string;
+            _: {} | undefined;
+            onLoad(): Promise<unknown>;
+            exec(command: string): (...args: any) => Promise<any>;
+            get(command: string): Promise<any>;
+        } | {
+            subClass: any;
+            onLoad(): Promise<any>;
+            get(command: string): Promise<any>;
+            exec(command: string): (...args: any) => Promise<any>;
+        };
+        _requests: Cancelable[];
+        _primaryKeyType?: "string" | "number" | undefined;
+        _sortableFields: string[];
+        _events: Evented;
+        _liveLayer: boolean;
+        _waitTimes: {
+            [key: string]: number;
+        };
+        onAdd(map: MapElement): void;
+        _asyncLoad(map: MapElement): Promise<false | undefined>;
+        loadTile(tile: Tile, callback: Callback<void>): void;
+        loadMapData(map?: MapElement, bounds?: [number, number, number, number]): Promise<void>;
+        drawMapData(newEsriJson: esriFeatureServiceResponse | esriMapServiceResponse, displayZoom: number): Promise<void>;
+        _queryFeatures(url: string, options: esriRequestParameters, offset: number, cancel: (cancel: Cancelable) => void, map: MapElement, zoom: number): Promise<void>;
+        _esriJsonToFeatures(esriJson: esriFeatureServiceResponse | esriMapServiceResponse): Feature<Geometry, GeoJsonProperties>[];
+        _waitEvent(name: string, waitTime?: number): void;
+        type: "geojson";
         id: string;
         minzoom: number;
         maxzoom: number;
-        url: string;
-        scheme: string;
         tileSize: number;
-        bounds: [number, number, number, number];
-        tileBounds: import("maplibre-gl").TileBounds;
-        roundZoom: boolean;
-        dispatcher: Dispatcher;
-        map: import("maplibre-gl").Map;
-        tiles: string[];
-        _loaded: boolean;
-        _options: RasterSourceSpecification | import("maplibre-gl").RasterDEMSourceSpecification;
-        _tileJSONRequest: import("maplibre-gl").Cancelable;
+        attribution: string;
+        promoteId: import("maplibre-gl").PromoteIdSpecification;
+        isTileClipped: boolean;
+        reparseOverscaled: boolean;
+        _data: string | import("geojson").GeoJSON;
+        _options: any;
+        workerOptions: any;
+        map: MapElement;
+        actor: import("maplibre-gl").Actor;
+        _pendingLoads: number;
+        _collectResourceTiming: boolean;
+        _removed: boolean;
+        load(): void;
+        setData(data: string | import("geojson").GeoJSON): any;
+        getClusterExpansionZoom(clusterId: number, callback: Callback<number>): any;
+        getClusterChildren(clusterId: number, callback: Callback<Feature<Geometry, GeoJsonProperties>[]>): any;
+        getClusterLeaves(clusterId: number, limit: number, offset: number, callback: Callback<Feature<Geometry, GeoJsonProperties>[]>): any;
+        _updateWorkerData(sourceDataType: import("maplibre-gl").MapSourceDataType): void;
         loaded(): boolean;
-        onAdd(map: import("maplibre-gl").Map): void;
+        abortTile(tile: Tile): void;
+        unloadTile(tile: Tile): void;
         onRemove(): void;
         serialize(): any;
-        hasTile(tileID: import("maplibre-gl").OverscaledTileID): boolean;
-        loadTile(tile: import("maplibre-gl").Tile, callback: import("maplibre-gl").Callback<void>): void;
-        abortTile(tile: import("maplibre-gl").Tile, callback: import("maplibre-gl").Callback<void>): void;
-        unloadTile(tile: import("maplibre-gl").Tile, callback: import("maplibre-gl").Callback<void>): void;
         hasTransition(): boolean;
         _listeners: import("maplibre-gl").Listeners;
         _oneTimeListeners: import("maplibre-gl").Listeners;
