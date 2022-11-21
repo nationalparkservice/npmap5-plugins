@@ -313,7 +313,7 @@ export default class Interactive {
     }
 
     private _getActiveFeatures(pixelPoint: { 'x': number, 'y': number }) {
-
+        e
         const popupLayers = [...(this._activePopups.get('popup')?.keys() || [])];
         const tooltipLayers = [...(this._activePopups.get('tooltip')?.keys() || [])];
         const activeLayers = [
@@ -408,7 +408,7 @@ export default class Interactive {
                 hash = ((hash << 5) - hash) + chr;
                 hash |= 0; // Convert to 32bit integer
             }
-            return hash.toString(36);
+            return new Uint32Array([hash])[0].toString(36);
         };
 
         features.forEach(feature => {
@@ -433,7 +433,7 @@ export default class Interactive {
                     // Make into a multi!
                     baseGeometry.type = 'Multi' + baseGeometry.type as any;
                     baseGeometry.coordinates = [baseGeometry.coordinates as (Position | Position[])] as (Position[] | Position[][]);
-                }   
+                }
                 if (baseGeometry.type === 'MultiPoint' || baseGeometry.type === 'MultiLineString' || baseGeometry.type === 'MultiPolygon') {
                     if (feature.geometry.type === baseGeometry.type.replace(/^Multi/g, '')) {
                         // TODO clean this up
