@@ -313,7 +313,6 @@ export default class Interactive {
     }
 
     private _getActiveFeatures(pixelPoint: { 'x': number, 'y': number }) {
-        e
         const popupLayers = [...(this._activePopups.get('popup')?.keys() || [])];
         const tooltipLayers = [...(this._activePopups.get('tooltip')?.keys() || [])];
         const activeLayers = [
