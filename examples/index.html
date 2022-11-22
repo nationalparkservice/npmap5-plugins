@@ -16,6 +16,7 @@
             margin: 0;
             padding: 0;
         }
+
         #map {
             position: absolute;
             top: 0;
@@ -35,14 +36,22 @@
         container: "map",
         style: 'https://demotiles.maplibre.org/style.json', // style URL
         center: [0, 0], // starting position [lng, lat]
-        zoom: 7
+        zoom: 10
     });
+
+    const stateBbox = new maplibregl.LngLatBounds(
+        new maplibregl.LngLat(-179.99, 51),
+        new maplibregl.LngLat(-129.3, 71.4)
+    );
+    map.fitBounds(stateBbox, { 'padding': 10, 'maxZoom': 8.5 });
+
 
     map.on("style.load", function () {
         // Possible position values are 'bottom-left', 'bottom-right', 'top-left', 'top-right'
         map.addControl(new OverviewMapControl({}, 'bottom-right'));
     });
     window.mmaapp = map;
+    
 </script>
 
 </html>

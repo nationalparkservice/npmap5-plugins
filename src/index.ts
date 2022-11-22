@@ -6,7 +6,8 @@ import {
   MapEventType,
   GeoJSONSource,
   ControlPosition,
-  FillLayerSpecification
+  FillLayerSpecification,
+  Event
 } from 'maplibre-gl';
 import { FeatureCollection, Polygon, Position, Feature } from 'geojson';
 
@@ -28,7 +29,9 @@ export type overviewMapOptions = {
   height?: number,
   position?: ControlPosition,
   style?: string | StyleSpecification,
-  scrollZoom?: boolean
+  scrollZoom?: boolean,
+  /** Amount of pixel to pan map on keypress, defaults to 10 */
+  _keyboardPanStep?: number
 };
 
 export default function OverviewMap(mapLibrary: typeof MapLibrary) {
@@ -38,6 +41,7 @@ export default function OverviewMap(mapLibrary: typeof MapLibrary) {
     _container: HTMLElement;
     _extent: FeatureCollection = blankGeoJsonFeature();
     _moving: boolean = false;
+    _easingMain: boolean = false;
     _mapLibrary: typeof MapLibrary;
     options: Required<overviewMapOptions>;
 
@@ -64,7 +68,8 @@ export default function OverviewMap(mapLibrary: typeof MapLibrary) {
         },
         width: 150,
         height: 150,
-        style: ''
+        style: '',
+        _keyboardPanStep: 20
       } as Required<overviewMapOptions>;
 
       this.options = { ...defaultOptions, ...options };
@@ -138,13 +143,42 @@ export default function OverviewMap(mapLibrary: typeof MapLibrary) {
         this._overviewMap.setStyle(this._mainMap.style.serialize());
       }
 
+      // Disable the keyboard events, but use our own
+      this._overviewMap.keyboard.disable();
+      // we still use the _panstep from the keyboard events in out custom function
+      this._overviewMap.keyboard._panStep = this.options._keyboardPanStep;
+      //this._overviewMap.getCanvas().addEventListener('keydown', this._keyboardEvents, true);
+
       // Update the overview map when the main map moves
       this.options.watchEvents.forEach(event => map.on(event, () => this._updateOverview(map)));
+
+      /////////////////////////////
+      // Update Overview Map triggers
+      // Once the style is loaded, start listening
       map.once('style.load', () => this._updateOverview(map));
+
+      // Start listening when it's added
       this._updateOverview(map);
 
-      // Update the main map when the overview moves
-      this._overviewMap.on('movestart', () => this._updateMain(map));
+      // Update the main map when the overview moves if the map is loaded (otherwise the style.load will pick up the change)
+      this._overviewMap.on('movestart', () => map.loaded() && this._updateMain(map));
+
+      // Make the overview map take control whenever the viewview map gets clicked
+      const takeControl = () => {
+        map.stop();
+        this._moving = false;
+        this._updateMain(map);
+      }
+      this._overviewMap.on('mousedown', takeControl);
+      this._overviewMap.on('touchstart', takeControl);
+
+      // Forward keydown events to the main map
+      this._overviewMap.getCanvas().addEventListener('keydown', (e) => {
+        //e.preventDefault();
+        map.stop();
+        this._keyboardEvents(e);
+      });
+      /////////////////////////////
 
       return this._container;
     }
@@ -206,10 +240,12 @@ export default function OverviewMap(mapLibrary: typeof MapLibrary) {
           map.getZoom() + this.options.zoomLevelOffset,
           this._overviewMap.getMaxZoom()
         );
-        this._moving = true;
-        this._overviewMap.setCenter(center);
-        this._overviewMap.setZoom(newOverviewZoom);
-        this._moving = false;
+        if (!this._easingMain) {
+          this._moving = true;
+          this._overviewMap.setCenter(center);
+          this._overviewMap.setZoom(newOverviewZoom);
+          this._moving = false;
+        }
         (this._overviewMap.getSource('bboxSource') as GeoJSONSource)?.setData(geojson);
         this._extent = geojson;
       }
@@ -217,23 +253,35 @@ export default function OverviewMap(mapLibrary: typeof MapLibrary) {
 
 
     _updateMain(map: MapLibraryMap) {
-      // Don't update the main map if it's already moving
+      // Don't update the main map if it's already moving or if it doesn't exist
       if (this._moving || !this._mainMap) return;
+      const moveStartCenter = this._overviewMap.getCenter();
 
+      // Take control of the main map
+      this._mainMap.stop();
+
+      // Get the current extent, and copy it
       const selectionExtent: FeatureCollection = JSON.parse(JSON.stringify(this._extent));
+
+      // Get the coordinates on the screen for the current map extent
       const screenCoords = ((selectionExtent.features[0]) as Feature<Polygon>).geometry.coordinates[0].map(
         pos => this._overviewMap.project(pos as [number, number])
       );
+
+      // Update the GeoJSON object in the overview map to match the extent
       (this._overviewMap.getSource('selectionSource') as GeoJSONSource)?.setData(selectionExtent);
 
       // Used when overzoomed
-      //const startPointLngLat = new this._mapLibrary.LngLat(...(selectionExtent.features[0] as Feature<Polygon>).geometry.coordinates[0][0] as [number, number]);
       const overZoomOffset = Math.max(this._overviewMap.getZoom() - this._mainMap.getZoom(), this.options.zoomLevelOffset);
 
+      // Called when the overview map is moving
       const moving = () => {
+        // Gets the current position 
         const currentSelectionExtentCoordinates = screenCoords
           .map(pos => this._overviewMap.unproject([pos.x, pos.y]))
           .map(xy => [xy.lng, xy.lat]);
+
+        // Updates the GeoJSON to match the new position
         const geojson = blankGeoJsonFeature();
         geojson.features.push({
           "type": "Feature",
@@ -243,40 +291,63 @@ export default function OverviewMap(mapLibrary: typeof MapLibrary) {
             "coordinates": [currentSelectionExtentCoordinates]
           }
         });
+
+        // Updates the box on the overview map
         (this._overviewMap.getSource('selectionSource') as GeoJSONSource)?.setData(geojson);
       };
 
-      const done = () => {
+      const doneEvents = () => {
+        // Draw the current box on the overview map
+        (this._overviewMap.getSource('selectionSource') as GeoJSONSource)?.setData(blankGeoJsonFeature());
+        this._moving = false;
+        this._easingMain = false;
+
+        // Start up the event listeners again
+        this._updateOverview(map);
+      };
+
+      // Called when the overview map is done moving
+      const moveend = () => {
+        // Stop listening for events
         this._overviewMap.off('move', moving);
-        this._overviewMap.off('moveend', done);
+        this._overviewMap.off('moveend', moveend);
+        this._overviewMap.off('mouseup', moveend);
+        this._overviewMap.off('touchend', moveend);
+        if (this._easingMain) return;
+
+        // If the map and the oveview map are ready, then we can update the map's center
         if (this._mainMap) {
-
-          // Deal with the overview map being outside of its minZoom (TODO or max zoom)
+          // Deal with the overview map being outside of its minZoom
           let newCenter = this._overviewMap.getCenter();
-
           const newMainZoom = between(
             this._mainMap.getMinZoom(),
             this._overviewMap.getZoom() - overZoomOffset,
             this._mainMap.getMaxZoom()
           );
 
-          this._moving = true;
-          this._mainMap.once('moveend', (e: any) => e.doneEvents && e.doneEvents());
-          this._mainMap.easeTo({
-            center: newCenter,
-            zoom: newMainZoom
-          }, {
-            doneEvents: () => {
-              (this._overviewMap.getSource('selectionSource') as GeoJSONSource)?.setData(blankGeoJsonFeature());
-              this._moving = false;
-              this._updateOverview(map);
-            }
-          });
+          // Check if the overview map has moved, if so, ease the main map, otherwise finish events
+          if (newCenter.lng !== moveStartCenter.lng || newCenter.lat !== moveStartCenter.lat) {
+            // Execute the "doneEvents" code when the map stops moving
+            this._mainMap.once('moveend', (event: any) => event.doneEvents && event.doneEvents());
+            this._moving = true;
+            this._easingMain = true;
+
+            this._mainMap.easeTo({
+              center: newCenter,
+              zoom: newMainZoom
+            }, {
+              doneEvents
+            });
+          } else {
+            doneEvents();
+          }
         }
       };
 
-      this._overviewMap.once('moveend', done);
       this._overviewMap.on('move', moving);
+      this._overviewMap.once('moveend', moveend);
+      this._overviewMap.once('mouseup', moveend);
+      this._overviewMap.once('touchend', moveend);
     }
 
     _getCenterAtPitch(map: MapLibraryMap, pitch: number, rotation: number) {
@@ -284,5 +355,54 @@ export default function OverviewMap(mapLibrary: typeof MapLibrary) {
       const center = map.unproject([(map.getCanvas().width / pixelRatio) / 2, (map.getCanvas().height / pixelRatio) / 2]);
       return center;
     }
+
+    _keyboardEvents = (e: KeyboardEvent) => {
+      if (e.altKey || e.ctrlKey || e.metaKey) return;
+
+      let xDir = 0;
+      let yDir = 0;
+      let zoomDir = 0;
+
+      const events = {
+        "ArrowLeft": () => {
+          e.preventDefault();
+          xDir = -1;
+        },
+        "ArrowRight": () => {
+          e.preventDefault();
+          xDir = +1;
+        },
+        "ArrowUp": () => {
+          e.preventDefault();
+          yDir = -1;
+        },
+        "ArrowDown": () => {
+          e.preventDefault();
+          yDir = +  1;
+        },
+        "+": () => zoomDir = 1,
+        "-": () => zoomDir - 1,
+      } as { [key: string]: () => void };
+
+      if (events[e.key]) {
+        // Update the variables
+        events[e.key]();
+
+        if (this._mainMap) {
+          const zoomMain = this._mainMap.getZoom();
+          const zoomOverview = this._overviewMap.getZoom();
+          const zoomDiff = zoomMain - zoomOverview;
+ 
+          this._mainMap.easeTo({
+            duration: 300,
+            easeId: 'keyboardHandler',
+            easing: (t) => t * (2 - t),
+            zoom: zoomDir ? Math.round(zoomMain) + zoomDir * (e.shiftKey ? 2 : 1) : zoomMain,
+            offset: [-xDir * this._mainMap.keyboard._panStep * zoomDiff, -yDir * this._mainMap.keyboard._panStep * zoomDiff],
+            center: this._mainMap.getCenter()
+          }, { originalEvent: e });
+        }
+      }
+    };
   }
 };
