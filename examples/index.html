@@ -36,9 +36,14 @@
         container: "map",
         style: 'https://demotiles.maplibre.org/style.json', // style URL
         center: [0, 0], // starting position [lng, lat]
+        hash: true,
+        bearing: 90,
+        pitch: 15,
         zoom: 10
     });
 
+    // Add zoom and rotation controls to the map.
+    map.addControl(new maplibregl.NavigationControl(), 'top-left');
     const stateBbox = new maplibregl.LngLatBounds(
         new maplibregl.LngLat(-179.99, 51),
         new maplibregl.LngLat(-129.3, 71.4)
