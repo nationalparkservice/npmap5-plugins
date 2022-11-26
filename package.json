@@ -27,6 +27,7 @@
         "build": "npm run clean && rollup -c rollup.config.js",
         "documentation": "documentation readme --section API src/index.ts",
         "serve": "npx serve . --listen $npm_package_config_port",
+        "preopenurl": "echo http://localhost:${npm_package_config_port}/examples",
         "openurl": "npx open-cli http://localhost:${npm_package_config_port}/examples",
         "openurlchrome": "npx open-cli http://localhost:${npm_package_config_port}/examples -- 'google chrome' --incognito",
         "openurlfirefox": "npx open-cli http://localhost:${npm_package_config_port}/examples -- firefox",
