@@ -26,5 +26,4 @@ Base map style:  *ArcGIS World Imagery*
 ---
 
 ## Live Demo
-<!-- TODO:  change `roblabs` to `nationalparkservice` when PR lands -->
-* https://raw.githack.com/roblabs/npmap5-plugins/maplibre-gl-carto-source/examples/index.html
+* https://raw.githack.com/nationalparkservice/npmap5-plugins/maplibre-gl-carto-source/examples/index.html
