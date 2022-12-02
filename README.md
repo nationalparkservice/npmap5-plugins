@@ -47,10 +47,24 @@ npm run openurlfirefox
 
 #### Table of Contents
 
+*   [position](#position)
+*   [scrollZoom](#scrollzoom)
 *   [\_keyboardPanStep](#_keyboardpanstep)
+
+### position
+
+Where to display the control "top-left" | "top-right" | "bottom-left" | "bottom-right"
+
+Type: ControlPosition
+
+### scrollZoom
+
+True/false allow scroll on zoom
+
+Type: [boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
 
 ### \_keyboardPanStep
 
-Amount of pixel to pan map on keypress, defaults to 10
+Amount of pixel to pan map on keypress, defaults to 15
 
 Type: [number](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number)
