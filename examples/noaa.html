@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>WMS Layer Usage Example with NOAA.gov</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    
+    <meta property="og:title" content="WMS Layer Usage Example with NOAA.gov" />
+    <meta property="og:description"
+        content="This plugin designed for MapLibre GL JS allows you to connect to map servers with the Web Map Service protocol.">
+    <meta property="og:url" content="">
+    <meta property="og:type" content="website">
+    
+    <meta property="og:image" content="../assets/Natural2019.jpeg" />
+    <meta property="og:image" content="../assets/Coastal1920.jpeg" />
+    <meta property="og:image" content="../assets/BlackWhite1930.jpeg" />
+    <meta property="og:image" content="../assets/Tidelands1977.jpeg" />
+
+    <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
+    <link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet" />
+    <script src="../dist/maplibre-gl-wms-source.min.js"></script>
+
+    <style>
+        #menu {
+            background: #fff;
+            position: absolute;
+            z-index: 1;
+            top: 10px;
+            right: 10px;
+            border-radius: 3px;
+            width: 240px;
+            border: 1px solid rgba(0, 0, 0, 0.4);
+            font-family: 'Open Sans', sans-serif;
+        }
+    
+        #menu a {
+            font-size: 13px;
+            color: #404040;
+            display: block;
+            margin: 0;
+            padding: 0;
+            padding: 10px;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+            text-align: center;
+        }
+    
+        #menu a:last-child {
+            border: none;
+        }
+    
+        #menu a:hover {
+            background-color: #f8f8f8;
+            color: #404040;
+        }
+    
+        #menu a.active {
+            background-color: #3887be;
+            color: #ffffff;
+        }
+    
+        #menu a.active:hover {
+            background: #3074a4;
+        }
+    </style>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <nav id="menu"></nav>
+    <div id="map"></div>
+</body>
+
+<script>
+    // WMS imagery from NOAA.gov
+    //   https://idpgis.ncep.noaa.gov/arcgis/rest/services/NWS_Observations
+    const toggleableLayerIds = ['radar_base_reflectivity', 'NOHRSC_Snow_Analysis']; 
+    const layersWMS = [[1],
+                    [4, 7],  // Snow Water Equivalent
+                    [0, 3]]; // Snow Depth
+    var initialLayer = 'NOHRSC_Snow_Analysis';
+
+    const map = new maplibregl.Map({
+        container: "map",
+        style: 'https://demotiles.maplibre.org/style.json', // style URL
+        center: [-97, 38.5], // starting position [lng, lat]
+        zoom: 4
+    });
+    map.addSourceType('wms', WmsSource(maplibregl), (e) => e && console.error('There was an error', e));
+
+    // Event Handlers
+
+    // Fired immediately after all necessary resources have been downloaded and the first visually complete rendering of the map has occurred.
+    //   https://maplibre.org/maplibre-gl-js-docs/api/map/#map.event:load
+    map.on("load", function () {
+        // Loop over WMS `layer` names
+        for (let i = 0; i < toggleableLayerIds.length; i++) {
+            const layer = toggleableLayerIds[i];
+            const layers = layersWMS[i];
+            url = `https://idpgis.ncep.noaa.gov/arcgis/services/NWS_Observations/${layer}/MapServer/WMSServer`
+            console.log(url);
+            console.log(url);
+
+            map.addSource(`${layer}`, {
+                'type': 'wms',
+                'tileSize': 256,
+                'url': url,
+                'layers': layers,
+                'format': 'png',
+            });
+
+            map.addLayer({
+                "id": `${layer}`,
+                "source": `${layer}`,
+                "type": "raster",
+                "layout": {
+                    // Make the layer disabled by default.
+                    "visibility": "none"
+                }
+            });
+        }
+    });
+
+    // After the last frame rendered before the map enters an "idle" state.
+    //   https://maplibre.org/maplibre-gl-js-docs/api/map/#map.event:idle
+    map.on('idle', () => {
+
+        // Set up the corresponding toggle button for each layer.
+        for (const id of toggleableLayerIds) {
+            // Skip layers that already have a button set up.
+            if (document.getElementById(id)) {
+                continue;
+            }
+
+            // Create a link.
+            const link = document.createElement('a');
+            link.id = id;
+            link.href = '#';
+            link.textContent = id;
+            link.className = '';
+
+            // Show or hide layer when the toggle is clicked.
+            link.onclick = function (e) {
+                const clickedLayer = this.textContent;
+                e.preventDefault();
+                e.stopPropagation();
+
+                // Toggle layer visibility by changing the layout object's visibility property.
+                const visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+                if (visibility === 'none') {
+                    map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+                    this.className = 'active';
+                } else {
+                    map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+                    this.className = '';
+                }
+            };
+
+            const layers = document.getElementById('menu');
+            layers.appendChild(link);
+        }
+
+        // Set an initial layer and zoom
+        if (initialLayer) {
+            doOnce();
+        }
+    });
+
+    /**
+     * Set once the initial layer, center & zoom.
+     */
+    function doOnce() {
+        // fire a click event once
+        document.querySelector(`#${initialLayer}`).click();
+        // Ease to
+        map.easeTo({ center: [-104.99, 39.73], zoom: 5, duration: 1300 });
+        initialLayer = '';
+    }
+</script>
+
+</html>

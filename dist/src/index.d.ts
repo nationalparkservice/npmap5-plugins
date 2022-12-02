@@ -3,13 +3,14 @@ export declare type WmsSourceSpecification = Omit<RasterSourceSpecification, 'ty
     'url': string;
     'layers': Array<string | number>;
     'transparent'?: boolean;
+    'format': string;
     tileSize?: number;
 };
 export declare type WmsApiLayerOptions = {
     /**   Service name. Value is WMS. */
     service: 'WMS';
     /** Service version. Value is one of 1.0.0, 1.1.0, 1.1.1, 1.3.0. */
-    version: '1.0.0' | '1.1.0' | '1.1.1';
+    version: '1.0.0' | '1.1.0' | '1.1.1' | '1.3.0';
     /**   Operation name. Value is GetMap. */
     request: 'GetMap';
     /**   Layers to display on map.Value is a comma - separated list of layer names. */

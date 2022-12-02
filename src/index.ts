@@ -10,6 +10,7 @@ export type WmsSourceSpecification = Omit<RasterSourceSpecification, 'type' | 't
   'url': string,
   'layers': Array<string | number>,
   'transparent'?: boolean,
+  'format': string,
   tileSize?: number
 };
 
@@ -23,7 +24,7 @@ export type WmsApiLayerOptions = {
   /**   Service name. Value is WMS. */
   service: 'WMS',
   /** Service version. Value is one of 1.0.0, 1.1.0, 1.1.1, 1.3.0. */
-  version: '1.0.0' | '1.1.0' | '1.1.1',
+  version: '1.0.0' | '1.1.0' | '1.1.1' | '1.3.0',
   /**   Operation name. Value is GetMap. */
   request: 'GetMap',
   /**   Layers to display on map.Value is a comma - separated list of layer names. */
@@ -106,14 +107,20 @@ export default function WmsSource(mapLibrary: typeof MapLibrary) {
       const imageFormats = [...(wmsCapabilities.getElementsByTagName('GetMap')[0].children)]
         .filter(c => c.tagName === 'Format')
         .map(c => c.textContent);
-      const wmsVersion = wmsCapabilities.getElementsByTagName('WMS_Capabilities')[0].getAttribute('version');
+
+      var wmsVersion;
+      try { // try for WMS version 1.3.x
+        wmsVersion = wmsCapabilities.getElementsByTagName('WMS_Capabilities')[0].getAttribute('version');
+      } catch (e) { // else for WMS version 1.1.x
+        wmsVersion = wmsCapabilities.getElementsByTagName('WMT_MS_Capabilities')[0].getAttribute('version');
+      }
 
       console.log('Image Formats', imageFormats, 'version', wmsVersion);
       (window as any).cap = wmsCapabilities;
 
       const wmsQuery: Omit<WmsApiLayerOptions, 'version' | 'srs' | 'bbox'> = {
         'layers': this._originalSource.layers.join(','),
-        'format': 'png32', // TODO check with version
+        'format': this._originalSource.format.toString() as string,
         'height': this._originalSource.tileSize?.toString() as string,
         'width': this._originalSource.tileSize?.toString() as string,
         'service': 'WMS',
