@@ -1,15 +1,17 @@
 <!DOCTYPE html>
-<!-- EXTREMELY SIMPLE maplibregl Map (adapted from https://maplibre.org/maplibre-gl-js-docs/example/simple-map/)-->
 <html>
-
 <head>
     <meta charset="utf-8" />
-    <title>Basic NPMap5 Usage Example</title>
+    <title>Overview Map Plugin for MapLibre</title>
+    <meta property="og:title" content="Overview Map Plugin for MapLibre" />
+    <meta property="og:description" content="This plugin designed for MapLibre GL JS adds a control to show a small overview of the current map.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="../assets/og-image.png" />
+    <meta property="og:image" content="../assets/og-image2.png" />
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
     <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
     <link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet" />
     <script src="../dist/maplibre-gl-overview.min.js"></script>
-
 
     <style>
         body {
@@ -36,9 +38,14 @@
         container: "map",
         style: 'https://demotiles.maplibre.org/style.json', // style URL
         center: [0, 0], // starting position [lng, lat]
+        hash: true,
+        bearing: 90,
+        pitch: 15,
         zoom: 10
     });
 
+    // Add zoom and rotation controls to the map.
+    map.addControl(new maplibregl.NavigationControl(), 'top-left');
     const stateBbox = new maplibregl.LngLatBounds(
         new maplibregl.LngLat(-179.99, 51),
         new maplibregl.LngLat(-129.3, 71.4)
