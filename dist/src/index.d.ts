@@ -7,10 +7,12 @@ export type overviewMapOptions = {
     selectionPaint?: FillLayerSpecification['paint'];
     width?: number;
     height?: number;
+    /** Where to display the control "top-left" | "top-right" | "bottom-left" | "bottom-right" */
     position?: ControlPosition;
     style?: string | StyleSpecification;
+    /** True/false allow scroll on zoom */
     scrollZoom?: boolean;
-    /** Amount of pixel to pan map on keypress, defaults to 10 */
+    /** Amount of pixel to pan map on keypress, defaults to 15 */
     _keyboardPanStep?: number;
 };
 export default function OverviewMap(mapLibrary: typeof MapLibrary): {
