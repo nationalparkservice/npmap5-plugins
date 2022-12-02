@@ -11,12 +11,11 @@ MapLibre has a support for pulling in [WMS as a `raster` type](https://maplibre.
 map.addSourceType('wms', WmsSource(maplibregl), (e) => e && console.error('There was an error', e));
 ```
 
-## Live Demo
+## Live Demos
 
-<!-- TODO:  change `roblabs` to `nationalparkservice` when PR lands -->
-* https://raw.githack.com/roblabs/npmap5-plugins/maplibre-gl-wms-source/examples/index.html
-* https://raw.githack.com/roblabs/npmap5-plugins/maplibre-gl-wms-source/examples/nj.html
-* https://raw.githack.com/roblabs/npmap5-plugins/maplibre-gl-wms-source/examples/noaa.html
+* NOAA Radar weather: [examples/index.html](https://raw.githack.com/nationalparkservice/npmap5-plugins/maplibre-gl-wms-source/examples/index.html)
+* New Jersey, NJ.gov:  [examples/nj.html](https://raw.githack.com/nationalparkservice/npmap5-plugins/maplibre-gl-wms-source/examples/nj.html)
+* NOAA Snow data: [examples/noaa.html](https://raw.githack.com/nationalparkservice/npmap5-plugins/maplibre-gl-wms-source/examples/noaa.html)
 
 ---
 
@@ -94,10 +93,11 @@ Array(9) [ "image/bmp", "image/jpeg", "image/tiff", "image/png", "image/png8", "
 ## Examples of NOAA WMS
 
 *CONUS 1x1 km base reflectivity doppler radar. This data is provided Mutil-Radar-Multi-Sensor (MRMS) algorithm.*
-![](assets/NOAA-Radar-Reflectivity.png)
+<img width="61.8%" src="assets/NOAA-Radar-Reflectivity.png">
+
 
 *This service consists of four maps of snow characteristics for the coterminous U.S.: snow water equivalent, snow depth, mean snowpack temperature and snowmelt.*
-![](assets/NOAA-Snow-Analysis.png)
+<img width="61.8%" src="assets/NOAA-Snow-Analysis.png">
 
 ---
 
@@ -141,28 +141,34 @@ Array(4) [ "image/jpeg", "image/tiff", "image/png", "image/jp2;subtype=\"gmljp2\
 ## Examples of NJ.gov WMS
 
 *This service provides access to a raster dataset containing scanned and georeferenced black and white aerial photographs of the Atlantic coast of New Jersey. Photograph date is believed to be 1920, based upon hand-written notation on some of the storage envelopes.*
-![](assets/NJ-Coastal1920.jpeg)
+
+<img width="61.8%" src="assets/NJ-Coastal1920.jpeg">
 
 ---
 
 *This OGC compliant Web Map Service includes a historical image data set of a mosaic of black and white photography of New Jersey from the early 1930s. The source imagery was hand cut to produce 261 mosaic tile prints on linen-backed paper. The data set was produced by scanning these mosaic tile prints at 400 dpi and saved as TIFF images.*
-![](assets/NJ-BlackWhite1930.jpeg)
+
+<img width="61.8%" src="assets/NJ-BlackWhite1930.jpeg">
 
 ---
 
 *Ellis Island, 1930*
-![](assets/NJ-Ellis-Island-BlackWhite1930.jpg)
+
+<img width="61.8%" src="assets/NJ-Ellis-Island-BlackWhite1930.jpg">
 
 *This Web Map Service publishes the series of chronopaque photo-basemaps known as the "1977 Tidelands Basemaps."*
-![](assets/NJ-Tidelands1977.jpeg)
+
+<img width="61.8%" src="assets/NJ-Tidelands1977.jpeg">
 
 ---
 
 *Ellis Island, 1977*
-![](assets/NJ-Ellis-Island-Tidelands1977.jpg)
+
+<img width="61.8%" src="assets/NJ-Ellis-Island-Tidelands1977.jpg">
 
 *This service provides natural color imagery from the 2019 National Agriculture Imagery Program (NAIP). The NAIP acquires and publishes ortho imagery that has been collected during the agricultural growing season in the U.S.*
-![](assets/NJ-Natural2019.jpeg)
+
+<img width="61.8%" src="assets/NJ-Natural2019.jpeg">
 
 ---
 
