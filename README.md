@@ -4,7 +4,7 @@ This plugin designed for [MapLibre GL JS](https://maplibre.org) adds a overview 
 
 ## Live Demo
 
-*  [examples/index.html](https://raw.githack.com/roblabs/npmap5-plugins/maplibre-gl-overview/examples/index.html)
+*  [examples/index.html](https://raw.githack.com/nationalparkservice/npmap5-plugins/maplibre-gl-overview/examples/index.html)
 
 ## Examples
 
