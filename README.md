@@ -11,10 +11,10 @@ This plugin adds support for ArcGIS.  See the branch [`maplibre-gl-arcgis-rest-s
 See the live demo of the [ArcGIS plugin](
 https://raw.githack.com/nationalparkservice/npmap5-plugins/maplibre-gl-arcgis-rest-source/examples/index.html).
 
-
 <video controls muted playsinline 
     src="https://github.com/nationalparkservice/npmap5-plugins/releases/download/v1.0.0/maplibre-gl-arcgis-rest-source.mov"  
     poster="https://raw.githubusercontent.com/nationalparkservice/npmap5-plugins/maplibre-gl-arcgis-rest-source/assets/maplibre-gl-arcgis-rest-source.png"
+    width="61.8%"
     >
 </video>
 
