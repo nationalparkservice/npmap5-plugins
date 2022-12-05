@@ -16,11 +16,6 @@ https://raw.githack.com/nationalparkservice/npmap5-plugins/maplibre-gl-arcgis-re
     src="https://github.com/nationalparkservice/npmap5-plugins/releases/download/v1.0.0/maplibre-gl-arcgis-rest-source.mov"  
     poster="https://raw.githubusercontent.com/nationalparkservice/npmap5-plugins/maplibre-gl-arcgis-rest-source/assets/maplibre-gl-arcgis-rest-source.png"
     >
-
-    <source 
-        src="https://github.com/nationalparkservice/npmap5-plugins/releases/download/v1.0.0/maplibre-gl-arcgis-rest-source.mov" 
-        type="video/quicktime"
-    >  
 </video>
 
 ---
