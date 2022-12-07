@@ -43,7 +43,7 @@ See the live demo of the [interactivity plugin](https://raw.githack.com/national
 
 This plugin adds a overview or mini-map of the current map.  See the branch [`maplibre-gl-overview`](https://github.com/nationalparkservice/npmap5-plugins/tree/maplibre-gl-overview) for more details.
 
-See the live demo of the [overview plugin](https://raw.githack.com/roblabs/npmap5-plugins/maplibre-gl-overview/examples/index.html).
+See the live demo of the [overview plugin](https://raw.githack.com/nationalparkservice/npmap5-plugins/maplibre-gl-overview/examples/index.html).
 
 <img width="61.8%" src="https://raw.githubusercontent.com/nationalparkservice/npmap5-plugins/maplibre-gl-overview/assets/og-image.png">
 
