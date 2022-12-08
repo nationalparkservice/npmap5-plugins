@@ -13,10 +13,10 @@
     <meta property="og:url" content="">
     <meta property="og:type" content="website">
 
-    <meta property="og:image" content="../assets/Natural2019.jpeg" />
-    <meta property="og:image" content="../assets/Coastal1920.jpeg" />
-    <meta property="og:image" content="../assets/BlackWhite1930.jpeg" />
-    <meta property="og:image" content="../assets/Tidelands1977.jpeg" />
+    <meta property="og:image" content="../assets/NJ-Natural2019.jpeg" />
+    <meta property="og:image" content="../assets/NJ-Coastal1920.jpeg" />
+    <meta property="og:image" content="../assets/NJ-BlackWhite1930.jpeg" />
+    <meta property="og:image" content="../assets/NJ-Tidelands1977.jpeg" />
 
     <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
     <link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet" />
@@ -128,6 +128,13 @@
                 }
             });
         }
+
+        map.addControl(new maplibregl.NavigationControl(), 'top-left');
+        const stateBbox = new maplibregl.LngLatBounds(
+            new maplibregl.LngLat(-77.78, 38.02),
+            new maplibregl.LngLat(-71.30, 42.17)
+        );
+        map.fitBounds(stateBbox, { 'padding': 10, 'maxZoom': 18.5 });
     });
 
     // After the last frame rendered before the map enters an "idle" state.
