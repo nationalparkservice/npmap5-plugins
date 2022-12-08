@@ -62,7 +62,7 @@ See the live demo of the [overview plugin](https://raw.githack.com/nationalparks
         type="video/mp4"
     >
 </video>
-<figcaption>Demo of the “Overmap plugin” for MapLibre show how the Overmap behaves when the pitch & bearing changes.
+<figcaption>Demo of the “Overmap plugin” for MapLibre shows how the Overmap behaves when the pitch & bearing changes.
 </figcaption>
 </figure>
 
@@ -72,7 +72,18 @@ See the live demo of the [overview plugin](https://raw.githack.com/nationalparks
 
 This plugin allows you to connect to map servers with the Web Map Service (WMS) protocol.  See the branch [`maplibre-gl-wms-source`](https://github.com/nationalparkservice/npmap5-plugins/tree/maplibre-gl-wms-source) for more details.
 
-See the live demo of the [WMS plugin](https://raw.githack.com/nationalparkservice/npmap5-plugins/maplibre-gl-wms-source/examples/index.html).
+See the live demo of the [WMS plugin](https://raw.githack.com/nationalparkservice/npmap5-plugins/maplibre-gl-wms-source/examples/index.html).  There you will also find demos of NOAA weather data & the New Jersey satellite imagery.
 
-
-<img width="61.8%" src="https://raw.githubusercontent.com/nationalparkservice/npmap5-plugins/maplibre-gl-wms-source/assets/NOAA-Snow-Analysis.png">
+<figure>
+<video controls loop muted playsinline preload="metadata"
+    width="61.8%"
+    poster="https://raw.githubusercontent.com/nationalparkservice/npmap5-plugins/maplibre-gl-wms-source/assets/NOAA-Snow-Analysis.png"
+  >
+    <source 
+        src="https://github.com/nationalparkservice/npmap5-plugins/releases/download/v1.0.0/maplibre-gl-wms-source.mov" 
+        type="video/mp4"
+    >
+</video>
+<figcaption>Demo of the “WMS plugin” for MapLibre shows 1) NOAA weather & Snow data overlays, and 2) satellite imagery of the state of New Jersey from 1920, 1930, 1977, and 2019.
+</figcaption>
+</figure>
