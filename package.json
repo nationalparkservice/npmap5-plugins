@@ -7,6 +7,9 @@
         "npmap",
         "nps"
     ],
+    "config": {
+        "port": "3020"
+    },
     "author": "James McAndrew  <james_mcandrew@partner.nps.gov>",
     "license": "MIT",
     "main": "dist/maplibre-gl-interactivity.js",
@@ -19,20 +22,29 @@
     "scripts": {
         "clean": "rm -rf ./dist",
         "build-dev": "NODE_ENV=development npm run build",
+        "documentation": "documentation readme --section API src/index.ts",
         "watch-dev": "NODE_ENV=development npm run watch",
         "build-prod": "NODE_ENV=production npm run build",
         "build": "npm run clean && rollup -c rollup.config.js",
+        "serve": "npx serve . --listen $npm_package_config_port",
+        "preopenurl": "echo http://localhost:${npm_package_config_port}/examples",
+        "openurl": "npx open-cli http://localhost:${npm_package_config_port}/examples/",
+        "openurlchrome": "npx open-cli http://localhost:${npm_package_config_port}/examples/ -- 'google chrome' --incognito",
+        "openurlfirefox": "npx open-cli http://localhost:${npm_package_config_port}/examples/ -- firefox",
         "watch": "rollup -c rollup.config.js --watch"
     },
     "devDependencies": {
         "@open-wc/building-rollup": "^2.2.1",
         "@types/geojson": "^7946.0.10",
+        "documentation": "^14.0.0",
         "maplibre-gl": "^2.4.0",
         "rollup": "3.4.0",
+        "open-cli": "^7.1.0",
         "rollup-plugin-sourcemaps": "^0.6.3",
         "rollup-plugin-terser": "^7.0.2",
         "rollup-plugin-typescript2": "^0.34.1",
         "rollup-plugin-web-worker-loader": "^1.6.1",
+        "serve": "^14.1.2",
         "typescript": "^4.9.3"
     },
     "dependencies": {}
