@@ -44,6 +44,20 @@ This plugin adds popup interactivity to your map.  See the branch [`maplibre-gl-
 
 See the live demo of the [interactivity plugin](https://raw.githack.com/nationalparkservice/npmap5-plugins/maplibre-gl-interactivity/examples/index.html).
 
+<figure>
+<video controls loop muted playsinline preload="metadata"
+    width="61.8%"
+    poster="https://github.com/nationalparkservice/npmap5-plugins/raw/maplibre-gl-interactivity/assets/maplibre-gl-interactivity.png"
+  >
+    <source 
+        src="https://github.com/nationalparkservice/npmap5-plugins/releases/download/v1.0.0/maplibre-gl-interactivity.mov" 
+        type="video/mp4"
+    >
+</video>
+<figcaption>Demo of the “Interactivity plugin” for MapLibre shows popups and tooltips.
+</figcaption>
+</figure>
+
 ---
 
 ### Overview Plugin
