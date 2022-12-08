@@ -12,7 +12,7 @@ See the live demo of the [ArcGIS plugin](
 https://raw.githack.com/nationalparkservice/npmap5-plugins/maplibre-gl-arcgis-rest-source/examples/index.html).
 
 <figure>
-<video controls muted playsinline preload="metadata"
+<video controls loop muted playsinline preload="metadata"
     width="61.8%"
     poster="https://raw.githubusercontent.com/nationalparkservice/npmap5-plugins/maplibre-gl-arcgis-rest-source/assets/maplibre-gl-arcgis-rest-source.png"
   >
@@ -50,11 +50,21 @@ See the live demo of the [interactivity plugin](https://raw.githack.com/national
 
 This plugin adds a overview or mini-map of the current map.  See the branch [`maplibre-gl-overview`](https://github.com/nationalparkservice/npmap5-plugins/tree/maplibre-gl-overview) for more details.
 
-See the live demo of the [overview plugin](https://raw.githack.com/nationalparkservice/npmap5-plugins/maplibre-gl-overview/examples/index.html).
+See the live demo of the [overview plugin](https://raw.githack.com/nationalparkservice/npmap5-plugins/maplibre-gl-overview/examples/index.html).  You can use the keyboard arrow keys to navigate the Overview map.
 
-<img width="61.8%" src="https://raw.githubusercontent.com/nationalparkservice/npmap5-plugins/maplibre-gl-overview/assets/og-image.png">
-
-<img width="61.8%" src="https://raw.githubusercontent.com/nationalparkservice/npmap5-plugins/maplibre-gl-overview/assets/og-image2.png">
+<figure>
+<video controls loop muted playsinline preload="metadata"
+    width="61.8%"
+    poster="https://raw.githubusercontent.com/nationalparkservice/npmap5-plugins/maplibre-gl-overview/assets/og-image.png"
+  >
+    <source 
+        src="https://github.com/nationalparkservice/npmap5-plugins/releases/download/v1.0.0/maplibre-gl-overview.mov" 
+        type="video/mp4"
+    >
+</video>
+<figcaption>Demo of the “Overmap plugin” for MapLibre show how the Overmap behaves when the pitch & bearing changes.
+</figcaption>
+</figure>
 
 ---
 
