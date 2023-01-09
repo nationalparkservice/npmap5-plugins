@@ -1,12 +1,12 @@
 import { default as MapLibrary, VectorSourceSpecification, Evented, Dispatcher } from 'maplibre-gl';
-export declare type CartoSourceSpecification = Omit<VectorSourceSpecification, 'type' | 'tiles' | 'url' | 'scheme'> & {
+export type CartoSourceSpecification = Omit<VectorSourceSpecification, 'type' | 'tiles' | 'url' | 'scheme'> & {
     'type': 'carto';
     'user': string;
     'table'?: string;
     'sql'?: string;
     'server'?: string;
 };
-export declare type CartoApiLayerOptions = {
+export type CartoApiLayerOptions = {
     /** The SQL request to the user database that will fetch the rendered data.
      * The SQL request should include the following Mapnik layer configurations:
      *   geom_column
@@ -51,7 +51,7 @@ export declare type CartoApiLayerOptions = {
         }
     ];
 };
-export declare type CartoApiLayerObj = {
+export type CartoApiLayerObj = {
     /**
       mapnik - rasterized tiles
       cartodb - an alias for mapnik (for backward compatibility)
@@ -63,7 +63,7 @@ export declare type CartoApiLayerObj = {
     type: "mapnik" | "cartodb" | "torque" | "http" | "plain" | "named";
     options: CartoApiLayerOptions;
 };
-export declare type CartoApiV1CreateMap = {
+export type CartoApiV1CreateMap = {
     /** Spec version to use for validation. */
     version?: string;
     /**   The default map extent for the map projection. Note: Currently, only webmercator is supported. */
