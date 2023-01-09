@@ -1,6 +1,6 @@
 import { esriGeometryType, Multipoint, Point, Polygon, Polyline, SpatialReferenceWkid } from "arcgis-rest-api";
 import { VectorSourceSpecification } from "maplibre-gl";
-export declare type esriRequestParameters = {
+export type esriRequestParameters = {
     "where"?: string;
     "objectIds"?: string;
     "geometry"?: string;
@@ -43,7 +43,7 @@ export declare type esriRequestParameters = {
     "timeReferenceUnknownClient"?: boolean;
     "f"?: "html" | "json" | "geojson" | "pbf";
 };
-export declare type esriExtent = {
+export type esriExtent = {
     "type": "extent";
     "xmin": number;
     "ymin": number;
@@ -51,13 +51,13 @@ export declare type esriExtent = {
     "ymax": number;
     "spatialReferece": SpatialReferenceWkid;
 };
-export declare type esriQuantizationParameters = {
+export type esriQuantizationParameters = {
     mode: 'view' | 'edit';
     originPosition: 'upperLeft' | 'lowerLeft';
     tolerance: number;
     extent: esriExtent;
 };
-export declare type ArcGisRestSpecification = Omit<VectorSourceSpecification, 'type' | 'tiles' | 'url' | 'scheme'> & {
+export type ArcGisRestSpecification = Omit<VectorSourceSpecification, 'type' | 'tiles' | 'url' | 'scheme'> & {
     /** WHERE clause syntax on the fields in the layer is supported for most data sources.
      * Some data sources have restrictions on what is supported.
      * Hosted feature services in ArcGIS Enterprise running on a spatiotemporal
@@ -77,7 +77,7 @@ export declare type ArcGisRestSpecification = Omit<VectorSourceSpecification, 't
     /** If required, you can specific your ArcGIS token */
     'token'?: string;
 };
-export declare type ArcGisRestSpecificationMetadata = {
+export type ArcGisRestSpecificationMetadata = {
     id: number;
     name: string;
     displayField: string;
@@ -88,8 +88,8 @@ export declare type ArcGisRestSpecificationMetadata = {
     htmlPopupType: 'esriServerHTMLPopupTypeAsHTMLText' | 'esriServerHTMLPopupTypeAsURL' | 'esriServerHTMLPopupTypeNone';
     extent: esriExtent;
 };
-export declare type esriFieldType = 'esriFieldTypeInteger' | 'esriFieldTypeSmallInteger' | 'esriFieldTypeDouble' | 'esriFieldTypeSingle' | 'esriFieldTypeString' | 'esriFieldTypeDate' | 'esriFieldTypeGeometry' | 'esriFieldTypeOID' | 'esriFieldTypeBlob' | 'esriFieldTypeGlobalID' | 'esriFieldTypeRaster' | 'esriFieldTypeGUID' | 'esriFieldTypeXML';
-export declare type esriFullGeometryType = 
+export type esriFieldType = 'esriFieldTypeInteger' | 'esriFieldTypeSmallInteger' | 'esriFieldTypeDouble' | 'esriFieldTypeSingle' | 'esriFieldTypeString' | 'esriFieldTypeDate' | 'esriFieldTypeGeometry' | 'esriFieldTypeOID' | 'esriFieldTypeBlob' | 'esriFieldTypeGlobalID' | 'esriFieldTypeRaster' | 'esriFieldTypeGUID' | 'esriFieldTypeXML';
+export type esriFullGeometryType = 
 /** Any of the geometry coclass types. */
 'esriGeometryAny' | 
 /** A collection of geometries of arbitrary type. */
@@ -130,7 +130,7 @@ export declare type esriFullGeometryType =
 'esriGeometryTriangles' | 
 /** A surface patch of triangles defined by three consecutive points. */
 'esriGeometryTriangleStrip';
-export declare type esriSpatialReference = {
+export type esriSpatialReference = {
     "wkid": number;
     "latestWkid"?: number;
     "vcsWkid"?: number;
@@ -170,7 +170,7 @@ export interface esriFeatureServiceResponse extends esriMapServiceResponse {
     /** added in 10.1 */
     "hasM": boolean;
 }
-export declare type esriPbfFeatureResult = {
+export type esriPbfFeatureResult = {
     exceededTransferLimit: boolean;
     features: Array<esriPbfFeature>;
     fields: Array<any>;
@@ -189,7 +189,7 @@ export declare type esriPbfFeatureResult = {
     };
     values: Array<any>;
 };
-export declare type esriPbfFeature = {
+export type esriPbfFeature = {
     "attributes": Array<{
         [key: string]: (string | number | boolean);
     }>;
@@ -209,24 +209,24 @@ export declare enum esriPbfGeometryTypeEnum {
     esriGeometryTypeMultipatch = 4,
     esriGeometryTypeNone = 127
 }
-export declare type esriPbfScale = {
+export type esriPbfScale = {
     mScale: number;
     xScale: number;
     yScale: number;
     zScale: number;
 };
-export declare type esriPbfTranslate = {
+export type esriPbfTranslate = {
     mTranslate: number;
     xTranslate: number;
     yTranslate: number;
     zTranslate: number;
 };
-export declare type esriPbfTranform = {
+export type esriPbfTranform = {
     quantizeOriginPostion: number;
     scale: esriPbfScale;
     translate: esriPbfTranslate;
 };
-export declare type esriJSONTranform = {
+export type esriJSONTranform = {
     originPosition: 'upperLeft' | 'lowerLeft';
     scale: [number, number];
     translate: [number, number, number, number];
@@ -329,7 +329,7 @@ export interface esriServer {
     "useStandardizedQueries"?: boolean;
     "supportedSpatialRelationships"?: ("esriSpatialRelIntersects" | "esriSpatialRelContains" | "esriSpatialRelCrosses" | "esriSpatialRelEnvelopeIntersects" | "esriSpatialRelIndexIntersects" | "esriSpatialRelOverlaps" | "esriSpatialRelTouches" | "esriSpatialRelWithin" | "esriSpatialRelRelation")[];
 }
-declare type esriServerLayer = {
+type esriServerLayer = {
     "id": number;
     "name": string;
     "parentLayerId": number;
@@ -339,7 +339,7 @@ declare type esriServerLayer = {
     "maxScale": number;
     "geometryType": esriGeometryType;
 };
-declare type esriFeatureServerOnly = {
+type esriFeatureServerOnly = {
     "hasVersionedData": boolean;
     "supportsDisconnectedEditing": boolean;
     /** Added at 10.8 */
@@ -451,7 +451,7 @@ declare type esriFeatureServerOnly = {
     "standardMaxRecordCountNoGeometry"?: number;
     "maxRecordCountFactor"?: number;
 };
-declare type esriMapServerOnly = {
+type esriMapServerOnly = {
     "mapName": string;
     /** Added at 10.1 */
     "supportsDynamicLayers"?: boolean;
@@ -517,17 +517,17 @@ declare type esriMapServerOnly = {
     "effectiveMaxScale"?: number;
     "supportsDynamicLegends"?: boolean;
 };
-export declare type esriServerError = {
+export type esriServerError = {
     "error": {
         "code": number;
         "message": 'json' | 'urlencoded';
         "details": any[];
     };
 };
-export declare type esriFeatureServer = esriServer & esriFeatureServerOnly;
-export declare type esriMapServer = esriServer & esriMapServerOnly;
-declare type esriDrawingInfo = {};
-declare type esriServiceFieldType = {
+export type esriFeatureServer = esriServer & esriFeatureServerOnly;
+export type esriMapServer = esriServer & esriMapServerOnly;
+type esriDrawingInfo = {};
+type esriServiceFieldType = {
     "name": string;
     "type": esriFieldType;
     "alias": string;

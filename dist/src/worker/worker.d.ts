@@ -9,5 +9,5 @@ export declare const libraries: {
     [_: string]: any;
 };
 declare const subClasses: string[];
-export declare type SubClasses = typeof subClasses[number];
+export type SubClasses = typeof subClasses[number];
 export {};
