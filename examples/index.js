@@ -32,6 +32,7 @@ const addSvgToMap = (name, svg, map, size) => new Promise((res, rej) => {
 
 const map = new maplibregl.Map({
     container: 'map', // container id
+    hash: true,
     style: 'https://demotiles.maplibre.org/style.json', // style URL
     center: [-56.1738, 46.7861], // starting position [lng, lat]
     zoom: 12 // starting zoom
