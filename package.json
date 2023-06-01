@@ -21,7 +21,7 @@
     ],
     "scripts": {
         "clean": "rm -rf ./dist",
-        "build-dev": "NODE_ENV=development npm run build",
+        "dev": "NODE_ENV=development npm run build",
         "watch-dev": "NODE_ENV=development npm run watch",
         "build-prod": "NODE_ENV=production npm run build",
         "build": "npm run clean && rollup -c rollup.config.js",
