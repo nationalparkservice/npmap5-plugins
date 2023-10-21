@@ -1,0 +1,66 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "type": "Lake",
+                "name": "Salt Lake East",
+                "outerColor": "#FF6464",
+                "innerColor": "#FFC8C8"
+            },
+            "geometry": {
+                "coordinates": [
+                    -112.26527818334093,
+                    41.008894937803774
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "type": "Lake",
+                "name": "Salt Lake West",
+                "outerColor": "#64FF64",
+                "innerColor": "#C8FFC8"
+            },            "geometry": {
+                "coordinates": [
+                    -112.16938658664499,
+                    40.987481245547315
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "type": "Lake",
+                "name": "Salt Lake Southwest",
+                "outerColor": "#6464FF",
+                "innerColor": "#C8C8FF"
+            },            "geometry": {
+                "coordinates": [
+                    -112.2306246013932,
+                    40.89115463446714
+                ],
+                "type": "Point"
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "type": "Lake",
+                "name": "Salt Lake Southeast",
+                "outerColor": "#FFFF64",
+                "innerColor": "#FFFFC8"
+            },            "geometry": {
+                "coordinates": [
+                    -112.16287678021187,
+                    40.89547140553509
+                ],
+                "type": "Point"
+            }
+        }
+    ]
+}

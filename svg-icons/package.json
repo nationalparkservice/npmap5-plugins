@@ -1,0 +1,45 @@
+{
+    "name": "svg-icons",
+    "bundle": "SVGPlugin",
+    "version": "0.0.1-c",
+    "description": "Add SVG icons to Maplibre gl maps",
+    "type": "module",
+    "keywords": [
+        "maplibre",
+        "npmap",
+        "nps"
+    ],
+    "author": "James McAndrew  <james_mcandrew@partner.nps.gov>",
+    "license": "MIT",
+    "main": "dist/svg-icons.js",
+    "types": "dist/src/index.d.ts",
+    "module": "dist/svg-icons.esm.js",
+    "browser": "dist/svg-icons.min.js",
+    "files": [
+        "dist/",
+        "README.md",
+        "LICENSE.md"
+      ],
+    "scripts": {
+        "clean": "rm -rf ./dist",
+        "build-dev": "NODE_ENV=development npm run build",
+        "watch-dev": "NODE_ENV=development npm run watch",
+        "build-prod": "NODE_ENV=production npm run build",
+        "build": "npm run clean && rollup -c rollup.config.mjs",
+        "watch": "rollup -c rollup.config.mjs --watch",
+        "test": "jest"
+    },
+    "devDependencies": {
+        "@rollup/plugin-terser": "^0.4.4",
+        "@types/jest": "^29.5.6",
+        "canvas": "^2.11.2",
+        "deepmerge": "^4.3.1",
+        "jest": "^29.7.0",
+        "jest-environment-jsdom": "^29.7.0",
+        "maplibre-gl": "^3.5.1",
+        "rollup": "^4.1.4",
+        "rollup-plugin-typescript2": "^0.36.0",
+        "ts-jest": "^29.1.1",
+        "typescript": "^5.2.2"
+    }
+}

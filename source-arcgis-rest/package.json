@@ -1,0 +1,49 @@
+{
+    "name": "arcgis-rest-source",
+    "exportName": "ArcGisRestSource",
+    "version": "0.0.1-a",
+    "description": "Allows ArcGIS REST sources to be used with Maplibre as Raster Tiles",
+    "keywords": [
+        "maplibre",
+        "npmap",
+        "nps",
+        "arcgis-rest"
+    ],
+    "author": "James McAndrew  <james_mcandrew@partner.nps.gov>",
+    "license": "MIT",
+    "main": "dist/arcgis-rest-source.js",
+    "types": "dist/src/index.d.ts",
+    "module": "dist/arcgis-rest-source.esm.js",
+    "browser": "dist/arcgis-rest-source.min.js",
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "clean": "rm -rf ./dist",
+        "build-dev": "NODE_ENV=development npm run build",
+        "watch-dev": "NODE_ENV=development npm run watch",
+        "build-prod": "NODE_ENV=production npm run build",
+        "build": "npm run clean && rollup -c rollup.config.mjs",
+        "watch": "rollup -c rollup.config.mjs --watch"
+    },
+    "devDependencies": {
+        "@rollup/plugin-commonjs": "^25.0.7",
+        "@rollup/plugin-node-resolve": "^15.2.3",
+        "@rollup/plugin-terser": "^0.4.4",
+        "@terraformer/arcgis": "^2.1.2",
+        "@types/arcgis-rest-api": "^10.4.7",
+        "@types/geojson": "^7946.0.12",
+        "@types/geojson-vt": "^3.2.3",
+        "@types/terraformer__arcgis": "^2.0.4",
+        "maplibre-gl": "^3.5.1",
+        "rollup": "^4.1.4",
+        "rollup-plugin-typescript2": "^0.36.0",
+        "rollup-plugin-web-worker-loader": "^1.6.1",
+        "typescript": "^5.2.2"
+    },
+    "overrides": {
+        "rollup-plugin-web-worker-loader": {
+            "rollup": "^4.1.4"
+        }
+    }
+}

@@ -1,0 +1,53 @@
+{
+    "name": "interactivity",
+    "version": "0.0.1-c",
+    "description": "Makes interactivity easier with maplibre",
+    "keywords": [
+        "maplibre",
+        "npmap",
+        "nps"
+    ],
+    "config": {
+        "port": "3020"
+    },
+    "author": "James McAndrew  <james_mcandrew@partner.nps.gov>",
+    "license": "MIT",
+    "main": "dist/interactivity.js",
+    "types": "dist/src/index.d.ts",
+    "module": "dist/interactivity.esm.js",
+    "browser": "dist/interactivity.min.js",
+    "bundle": "Interactivity",
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "clean": "rm -rf ./dist",
+        "build-dev": "NODE_ENV=development npm run build",
+        "documentation": "documentation readme --section API src/index.ts",
+        "watch-dev": "NODE_ENV=development npm run watch",
+        "build-prod": "NODE_ENV=production npm run build",
+        "build": "npm run clean && rollup -c rollup.config.mjs",
+        "serve": "npx serve . --listen $npm_package_config_port",
+        "watch": "rollup -c rollup.config.mjs --watch"
+    },
+    "devDependencies": {
+        "@rollup/plugin-node-resolve": "^15.2.3",
+        "@rollup/plugin-terser": "^0.4.4",
+        "@types/geojson": "^7946.0.12",
+        "deepmerge": "4.3.1",
+        "documentation": "^14.0.2",
+        "maplibre-gl": "^3.5.1",
+        "open-cli": "^7.2.0",
+        "polygon-clipping": "^0.15.3",
+        "rollup": "4.1.4",
+        "rollup-plugin-sourcemaps": "^0.6.3",
+        "rollup-plugin-typescript2": "^0.36.0",
+        "rollup-plugin-web-worker-loader": "^1.6.1",
+        "typescript": "^5.2.2"
+    },
+    "overrides": {
+        "rollup-plugin-web-worker-loader": {
+            "rollup": "^4.0.2"
+        }
+    }
+}

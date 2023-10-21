@@ -1,0 +1,284 @@
+{
+    "type": "FeatureCollection",
+    "generator": "overpass-ide",
+    "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+    "timestamp": "2023-05-01T19:33:53Z",
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "@id": "node/356672643",
+                "ele": "1551",
+                "gnis:county_id": "011",
+                "gnis:created": "12/31/1979",
+                "gnis:feature_id": "1427788",
+                "gnis:state_id": "49",
+                "name": "Elephant Head",
+                "natural": "peak",
+                "icon": "peak-elephant"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -112.242727,
+                    40.9888303
+                ]
+            },
+            "id": "node/356672643"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "@id": "node/356673685",
+                "ele": "1624",
+                "gnis:county_id": "011",
+                "gnis:created": "12/31/1979",
+                "gnis:feature_id": "1430412",
+                "gnis:state_id": "49",
+                "name": "Mollys Nipple",
+                "natural": "peak",
+                "icon": "peak"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -112.188002,
+                    40.8749431
+                ]
+            },
+            "id": "node/356673685"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "@id": "node/356673706",
+                "ele": "1507",
+                "gnis:county_id": "011",
+                "gnis:created": "12/31/1979",
+                "gnis:feature_id": "1430495",
+                "gnis:state_id": "49",
+                "name": "Mormon Rocks",
+                "natural": "peak",
+                "icon": "peak-rocks"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -112.2377266,
+                    40.9704973
+                ]
+            },
+            "id": "node/356673706"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "@id": "node/356675657",
+                "ele": "2006",
+                "gnis:county_id": "011",
+                "gnis:created": "02/25/1989",
+                "gnis:feature_id": "1435553",
+                "gnis:state_id": "49",
+                "name": "Frary Peak",
+                "natural": "peak",
+                "icon": "peak"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -112.215729,
+                    40.9639397
+                ]
+            },
+            "id": "node/356675657"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "@id": "node/356677177",
+                "ele": "1795",
+                "gnis:county_id": "011",
+                "gnis:created": "01/01/1990",
+                "gnis:feature_id": "1437438",
+                "gnis:state_id": "49",
+                "name": "Bamberger Hill",
+                "natural": "peak",
+                "icon": "peak-hill"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -112.2102256,
+                    40.9460533
+                ]
+            },
+            "id": "node/356677177"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "@id": "node/356677197",
+                "ele": "1514",
+                "gnis:county_id": "011",
+                "gnis:created": "01/01/1990",
+                "gnis:feature_id": "1437439",
+                "gnis:state_id": "49",
+                "name": "Beacon Knob",
+                "natural": "peak",
+                "icon": "peak-knob"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -112.2082813,
+                    41.0166084
+                ]
+            },
+            "id": "node/356677197"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "@id": "node/356677199",
+                "ele": "1582",
+                "gnis:county_id": "011",
+                "gnis:created": "01/01/1990",
+                "gnis:feature_id": "1437441",
+                "gnis:state_id": "49",
+                "name": "Dooly Knob",
+                "natural": "peak",
+                "icon": "peak-knob"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -112.2103414,
+                    40.9944969
+                ]
+            },
+            "id": "node/356677199"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "@id": "node/356677201",
+                "ele": "1495",
+                "gnis:county_id": "011",
+                "gnis:created": "01/01/1990",
+                "gnis:feature_id": "1437442",
+                "gnis:state_id": "49",
+                "name": "Garr Knolls",
+                "natural": "peak",
+                "icon": "peak-knob"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -112.1830017,
+                    40.8599433
+                ]
+            },
+            "id": "node/356677201"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "@id": "node/356677202",
+                "ele": "1642",
+                "gnis:county_id": "011",
+                "gnis:created": "01/01/1990",
+                "gnis:feature_id": "1437444",
+                "gnis:state_id": "49",
+                "name": "The Sentry",
+                "natural": "peak",
+                "icon": "peak"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -112.197725,
+                    40.9171648
+                ]
+            },
+            "id": "node/356677202"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "@id": "node/356677412",
+                "ele": "1934",
+                "gnis:county_id": "011",
+                "gnis:created": "01/01/1990",
+                "gnis:feature_id": "1438075",
+                "gnis:state_id": "49",
+                "name": "Stringham Peak",
+                "natural": "peak",
+                "icon": "peak"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -112.219115,
+                    40.9702196
+                ]
+            },
+            "id": "node/356677412"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "@id": "node/356685146",
+                "ele": "1300",
+                "gnis:county_id": "011",
+                "gnis:created": "01/01/1991",
+                "gnis:feature_id": "1455707",
+                "gnis:state_id": "49",
+                "name": "Picture Rock",
+                "natural": "peak",
+                "icon": "peak-rocks"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -112.2174475,
+                    40.8860539
+                ]
+            },
+            "id": "node/356685146"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "@id": "node/1779697565",
+                "name": "Coyote Ridge",
+                "natural": "peak",
+                "icon": "peak-coyote"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -112.214143,
+                    40.9847905
+                ]
+            },
+            "id": "node/1779697565"
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "@id": "node/2394280461",
+                "name": "Buffalo Point",
+                "natural": "peak",
+                "icon": "peak-bison"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -112.2625572,
+                    41.033025
+                ]
+            },
+            "id": "node/2394280461"
+        }
+    ]
+}

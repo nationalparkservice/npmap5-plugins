@@ -1,103 +1,31 @@
-## npmap5-plugins
+# NPMap5 PLugin Monorepo
 
-MapLibre Plugins for NPMap5.  These plugins are designed so that you can just pull in the MapLibre functionality that you need.
+This monorepo contains a collection of plugins designed to enhance the functionality of maps, with a focus on the National Park Service. Each plugin has its unique purpose and has been optimized for use with MapLibre and NPMap. Below is a list of the available plugins in this monorepo:
 
----
+## Plugins
 
-### ArcGIS Plugin
+### 1. [markdown-handlebars](./markdown-handlebars)
+Converts Markdown and NPMap handlebars to HTML.  
 
-This plugin adds support for ArcGIS.  See the branch [`maplibre-gl-arcgis-rest-source`](https://github.com/nationalparkservice/npmap5-plugins/tree/maplibre-gl-arcgis-rest-source) for more details.
+### 2. [home-button](./home-button)
+Creates a home button for the map.  
 
-See the live demo of the [ArcGIS plugin](
-https://raw.githack.com/nationalparkservice/npmap5-plugins/maplibre-gl-arcgis-rest-source/examples/index.html).
+### 3. [interactivity](./interactivity)
+Makes interactivity easier with MapLibre-gl-js.  
 
-<figure>
-<video controls loop muted playsinline preload="metadata"
-    width="61.8%"
-    poster="https://raw.githubusercontent.com/nationalparkservice/npmap5-plugins/maplibre-gl-arcgis-rest-source/assets/maplibre-gl-arcgis-rest-source.png"
-  >
-    <source 
-        src="https://github.com/nationalparkservice/npmap5-plugins/releases/download/v1.0.0/maplibre-gl-arcgis-rest-source.mov" 
-        type="video/mp4"
-    >
-</video>
-<figcaption>Demo of ArcGIS data sources added to a MapLibre Map.  UI shows data layers being toggled.
-</figcaption>
-</figure>
+### 4. [overview](./overview)
+Creates an overview map for use with MapLibre-gl-js.  
 
----
+### 5. [svg-icons](./svg-icons)
+Add SVG icons to MapLibre-gl-js maps.  
 
-### Carto Plugin
+### 6. [source-arcgis-rest](./source-arcgis-rest)
+Add an acrgis rest layer to your map
 
-This plugin adds a style later based on vector tiles served from [Carto.com](https://carto.com).  See the branch [`maplibre-gl-carto-source`](https://github.com/nationalparkservice/npmap5-plugins/tree/maplibre-gl-carto-source) for more details.
+### 7. [maplibre-gl-vector-text-protocol](./maplibre-gl-vector-text-protocol)
+Add KML, GPX, TopoJSON, OSM files to your map
 
-See the live demo of the [Carto plugin](
-https://raw.githack.com/nationalparkservice/npmap5-plugins/maplibre-gl-carto-source/examples/index.html).
+### 8. [source-wms](./source-wms)
+Add WMS Raster Layers to your map
 
-<img width="61.8%" src="https://raw.githubusercontent.com/nationalparkservice/npmap5-plugins/maplibre-gl-carto-source/assets/Carto-Plugin-OpenStreetMap.png">
-
----
-
-### Interactivity Plugin
-
-This plugin adds popup interactivity to your map.  See the branch [`maplibre-gl-interactivity`](https://github.com/nationalparkservice/npmap5-plugins/tree/maplibre-gl-interactivity) for more details.
-
-See the live demo of the [interactivity plugin](https://raw.githack.com/nationalparkservice/npmap5-plugins/maplibre-gl-interactivity/examples/index.html).
-
-<figure>
-<video controls loop muted playsinline preload="metadata"
-    width="61.8%"
-    poster="https://github.com/nationalparkservice/npmap5-plugins/raw/maplibre-gl-interactivity/assets/maplibre-gl-interactivity.png"
-  >
-    <source 
-        src="https://github.com/nationalparkservice/npmap5-plugins/releases/download/v1.0.0/maplibre-gl-interactivity.mov" 
-        type="video/mp4"
-    >
-</video>
-<figcaption>Demo of the “Interactivity plugin” for MapLibre shows popups and tooltips.
-</figcaption>
-</figure>
-
----
-
-### Overview Plugin
-
-This plugin adds a overview or mini-map of the current map.  See the branch [`maplibre-gl-overview`](https://github.com/nationalparkservice/npmap5-plugins/tree/maplibre-gl-overview) for more details.
-
-See the live demo of the [overview plugin](https://raw.githack.com/nationalparkservice/npmap5-plugins/maplibre-gl-overview/examples/index.html).  You can use the keyboard arrow keys to navigate the Overview map.
-
-<figure>
-<video controls loop muted playsinline preload="metadata"
-    width="61.8%"
-    poster="https://raw.githubusercontent.com/nationalparkservice/npmap5-plugins/maplibre-gl-overview/assets/og-image.png"
-  >
-    <source 
-        src="https://github.com/nationalparkservice/npmap5-plugins/releases/download/v1.0.0/maplibre-gl-overview.mov" 
-        type="video/mp4"
-    >
-</video>
-<figcaption>Demo of the “Overmap plugin” for MapLibre shows how the Overmap behaves when the pitch & bearing changes.
-</figcaption>
-</figure>
-
----
-
-### WMS Plugin
-
-This plugin allows you to connect to map servers with the Web Map Service (WMS) protocol.  See the branch [`maplibre-gl-wms-source`](https://github.com/nationalparkservice/npmap5-plugins/tree/maplibre-gl-wms-source) for more details.
-
-See the live demo of the [WMS plugin](https://raw.githack.com/nationalparkservice/npmap5-plugins/maplibre-gl-wms-source/examples/index.html).  There you will also find demos of NOAA weather data & the New Jersey satellite imagery.
-
-<figure>
-<video controls loop muted playsinline preload="metadata"
-    width="61.8%"
-    poster="https://raw.githubusercontent.com/nationalparkservice/npmap5-plugins/maplibre-gl-wms-source/assets/NOAA-Snow-Analysis.png"
-  >
-    <source 
-        src="https://github.com/nationalparkservice/npmap5-plugins/releases/download/v1.0.0/maplibre-gl-wms-source.mov" 
-        type="video/mp4"
-    >
-</video>
-<figcaption>Demo of the “WMS plugin” for MapLibre shows 1) NOAA weather & Snow data overlays, and 2) satellite imagery of the state of New Jersey from 1920, 1930, 1977, and 2019.
-</figcaption>
-</figure>
+For more details about each plugin, navigate to their respective directories to view their individual `README.md` files.

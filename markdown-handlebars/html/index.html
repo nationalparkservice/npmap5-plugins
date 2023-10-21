@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>MarkdownHandlebars Test</title>
+	<style>
+		.container {
+			display: flex;
+		}
+
+		textarea,
+		#errors,
+		#output {
+			flex: 1;
+			margin-right: 10px;
+		}
+
+		#errors,
+		#output {
+			margin-right: 0;
+			border: 1px solid #ccc;
+			padding: 5px;
+			overflow-wrap: break-word;
+		}
+	</style>
+</head>
+
+<body>
+
+	<div class="container">
+		<textarea id="textarea" placeholder="Type something here..." rows="4" cols="50"></textarea>
+		<div id="output"></div>
+	</div>
+
+	<div class="container">
+		<textarea id="jsonarea" placeholder='{"name": "world"}'' rows="4" cols="50"></textarea>
+		<div id="errors"></div>
+	</div>
+
+
+	<script src="../dist/markdown-handlebars.js"></script>
+	<script src="./test.js"></script>
+</body>
+
+</html>

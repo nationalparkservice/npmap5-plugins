@@ -1,0 +1,38 @@
+{
+    "name": "overview",
+    "version": "0.0.1-b",
+    "description": "Creates an overview map for use with maplibre",
+    "keywords": [
+        "maplibre",
+        "npmap",
+        "nps"
+    ],
+    "author": "James McAndrew  <james_mcandrew@partner.nps.gov>",
+    "license": "MIT",
+    "main": "dist/overview.js",
+    "types": "dist/src/index.d.ts",
+    "module": "dist/overview.esm.js",
+    "browser": "dist/overview.min.js",
+    "files": [
+        "dist"
+    ],
+    "scripts": {
+        "clean": "rm -rf ./dist",
+        "build-dev": "NODE_ENV=development npm run build",
+        "watch-dev": "NODE_ENV=development npm run watch",
+        "build-prod": "NODE_ENV=production npm run build",
+        "build": "npm run clean && rollup -c rollup.config.mjs",
+        "watch": "rollup -c rollup.config.mjs --watch"
+    },
+    "devDependencies": {
+        "@rollup/plugin-terser": "^0.4.4",
+        "@types/geojson": "^7946.0.12",
+        "deepmerge": "4.3.1",
+        "maplibre-gl": "^3.5.1",
+        "rollup": "4.1.4",
+        "rollup-plugin-sourcemaps": "^0.6.3",
+        "rollup-plugin-typescript2": "^0.36.0",
+        "typescript": "^5.2.2"
+    },
+    "dependencies": {}
+}

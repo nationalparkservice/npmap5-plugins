@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Show an Icon Example</title>
+    <meta property="og:title" content="SVG Icon Plugin for MapLibre" />
+    <meta property="og:description" content="This plugin adds icon tools to your map.">
+    <meta property="og:url" content="">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="../assets/maplibre-gl-svg-icons.png" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <script src="https://unpkg.com/maplibre-gl@3.5.1/dist/maplibre-gl.js"></script>
+    <script src="../dist/svg-icons.min.js"></script>
+    <link href="https://unpkg.com/maplibre-gl@3.5.1/dist/maplibre-gl.css" rel="stylesheet" />
+    <style>
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <nav id="menu"></nav>
+    <div id="map"></div>
+</body>
+<script type="module" src="./example2.js" async defer></script>
+
+</html>

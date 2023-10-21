@@ -1,0 +1,47 @@
+import typescript from 'rollup-plugin-typescript2';
+import terser from '@rollup/plugin-terser';
+import merge from 'deepmerge';
+
+import { readFileSync } from 'fs';
+
+const pkg = JSON.parse(readFileSync('package.json'));
+const name = pkg.name;
+const env = process.env.NODE_ENV || 'development';
+
+const baseConfig = {
+  input: './src/index.ts',
+  output: {
+    name: pkg.bundle
+  },
+  treeshake: env === 'production',
+  plugins: [typescript()]
+};
+
+const configs = [{
+  environments: ['production'],
+  output: {
+    format: 'cjs',
+    file: pkg.main,
+  }
+}, {
+  environments: ['development', 'production'],
+  output: {
+    format: 'umd',
+    file: pkg.browser,
+    sourcemap: true
+  },
+  plugins: env === 'production' ? [terser()] : []
+}, {
+  environments: ['production'],
+  output: {
+    format: 'esm',
+    file: pkg.module
+  }
+}]
+  .filter(config => config.environments === undefined || config.environments.indexOf(env) > -1)
+  .map(config => { delete config.environments; return config; })
+  .map(config => merge(baseConfig, config));
+
+console.log(configs);
+
+export default configs;
