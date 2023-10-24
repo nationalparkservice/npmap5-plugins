@@ -1,0 +1,28 @@
+{
+  "author": "National Park Service",
+  "name": "symbol-library",
+  "description": "National Park Service map symbols optimized for the web.",
+  "version": "4.0.0-a",
+  "homepage": "https://www.nps.gov/maps/tools/symbol-library/",
+  "type": "commonjs",
+  "main": "./dist/index.json",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "clean-ts": "rm -rf ./ts-dist",
+    "clean": "npm run clean-ts && rm -rf ./dist || true",
+    "build": "npm run clean && tsc && mv ./ts-dist/index.js ./ts-dist/index.mjs && node ./ts-dist/index.mjs && cp ./build/types.ts ./dist/index.d.ts && npm run clean-ts",
+    "build-prod": "npm run build",
+    "test": "echo 'None Implemented'"
+  },
+  "repository": "symbol-library",
+  "devDependencies": {
+    "@types/xml2js": "^0.4.12",
+    "glob": "^10.3.4",
+    "svgo": "^3.0.2",
+    "typescript": "^5.2.2",
+    "xml2js": "^0.6.2"
+  }
+}
