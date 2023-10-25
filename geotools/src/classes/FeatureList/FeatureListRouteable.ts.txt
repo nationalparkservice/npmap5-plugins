@@ -1,0 +1,847 @@
+import { Feature, GeoJsonProperties, LineString, MultiLineString, Position } from "geojson";
+import FeatureList from ".";
+import { nearestPointOnLineSegment } from '../../core/geometry';
+import { WGS84ToWebMercator, WebMercatorToWGS84 } from "../../core/projection";
+import * as dijkstrajs from 'dijkstrajs';
+import RBush from 'rbush';
+import { euclideanDistance } from "../../core/distance";
+
+export type routeOptions = {
+    costField: string | undefined,
+    costUnits: 'kph' | 'mph' | 'other',
+    onewayField: string | undefined,
+    onewayString: string | string[] | undefined, // What the field will say if it's a one way route (yes, true, etc), can be an array as well
+    defaultCost: number
+}
+
+type nodeInfoType = {
+    featureIdx: number;
+    nodeIdx: number;
+    feature?: Feature<LineString, GeoJsonProperties>;
+    node?: Position;
+};
+
+type intersectionPointInfo = {
+    clickPoint4326: Position,
+    nearestPoint?: Position,
+    nearestPointWGS84?: Position,
+    distanceInMeters: number,
+    featureIdx: number,
+    startNodeIdx: number,
+    endNodeIdx: number
+};
+
+type rbushData = {
+    minX: number,
+    minY: number,
+    maxX: number,
+    maxY: number,
+    featureIdx: number,
+    startIdx: number
+    endIdx: number,
+    segmentKey: string
+};
+
+type graphOptions = {
+    defaultEdgeValue: number;
+};
+
+/**
+ * Represents a graph of nodes and edges for routing purposes.
+ */
+export class NodeGraph {
+    _graph: { [from: string]: { [to: string]: number } } = {};
+    //_nodeCoords: { [node: string]: Position } = {};
+    _parent: FeatureListRoutable;
+
+    _edgeLookup: { [to: string]: string[] } = {};
+    _featureLookup: Map<number, [string, string][]> = new Map();
+
+    options: graphOptions;
+
+    static defaultOptions: graphOptions = {
+        defaultEdgeValue: Infinity
+    };
+
+    /**
+     * Creates a new instance of the NodeGraph class.
+     *
+     * @param {FeatureListRoutable} parent - The parent FeatureListRoutable associated with this graph.
+     * @param {Partial<graphOptions>} [options={}] - Optional graph options.
+     */
+    constructor(parent: FeatureListRoutable, options: Partial<graphOptions> = {}) {
+        this._parent = parent;
+        this.options = { ...NodeGraph.defaultOptions, ...options };
+    }
+
+    /**
+     * Sets a node in the graph using node information.
+     *
+     * @param {nodeInfoType} node - Information about the node to set.
+     */
+    setNode(node: nodeInfoType): void {
+        const name = this._getNodeName(node);
+        const coords = node.node || this._parent._features.get(node.featureIdx)?.geometry.coordinates[node.nodeIdx];
+        if (coords) this.setNodeByName(name, coords);
+    }
+
+    /**
+     * Sets an edge between two nodes in the graph.
+     *
+     * @param {nodeInfoType} fromNode - Information about the starting node of the edge.
+     * @param {nodeInfoType} toNode - Information about the ending node of the edge.
+     * @param {number} cost - The cost (cost) associated with the edge.
+     */
+    setEdge(fromNode: nodeInfoType, toNode: nodeInfoType, cost: number): void {
+        const fromNodeName = this._getNodeName(fromNode);
+        const toNodeName = this._getNodeName(toNode);
+
+        this.setEdgeByName(fromNodeName, toNodeName, cost);
+    }
+
+    /**
+     * Removes an edge between two nodes in the graph.
+     *
+     * @param {nodeInfoType} fromNode - Information about the starting node of the edge.
+     * @param {nodeInfoType} toNode - Information about the ending node of the edge.
+     */
+    removeEdge(fromNode: nodeInfoType, toNode: nodeInfoType): void {
+        const fromNodeName = this._getNodeName(fromNode);
+        const toNodeName = this._getNodeName(toNode);
+
+        this.removeEdgeByName(fromNodeName, toNodeName);
+    }
+
+    /**
+     * Removes a node from the graph.
+     *
+     * @param {nodeInfoType} node - Information about the node to remove.
+     */
+    removeNode(node: nodeInfoType): void {
+        const nodeName = this._getNodeName(node);
+        this.removeNodeByName(nodeName);
+    }
+
+    /**
+     * Retrieves the cost of an edge between two nodes in the graph.
+     *
+     * @param {nodeInfoType} fromNode - Information about the starting node of the edge.
+     * @param {nodeInfoType} toNode - Information about the ending node of the edge.
+     * @returns {number} The cost of the edge.
+     */
+    getEdge(fromNode: nodeInfoType, toNode: nodeInfoType): number | undefined {
+        const fromNodeName = this._getNodeName(fromNode);
+        const toNodeName = this._getNodeName(toNode);
+        try {
+            return this._graph[fromNodeName][toNodeName];
+        } catch (e) {
+            return;
+        }
+    };
+
+    /**
+     * Gets a unique node name based on node information.
+     *
+     * @param {nodeInfoType} node - Information about the node.
+     * @returns {string} The unique node name.
+     */
+    _getNodeName(node: nodeInfoType): string {
+        let prefix: string;
+        const { nodeIdx, featureIdx } = node;
+        const feature = this._parent._features.get(featureIdx);
+        const maxPointIdx = feature ? feature.geometry.coordinates.length - 1 : 0;
+
+        if (nodeIdx === 0) {
+            prefix = 's';
+        } else if (nodeIdx === maxPointIdx) {
+            prefix = 'e';
+        } else {
+            prefix = 'm';
+        }
+
+        return `${prefix}_${featureIdx}_${nodeIdx}`;
+    }
+
+    /**
+     * Gets node information based on a unique node name.
+     *
+     * @param {string} nodeName - The unique node name.
+     * @returns {nodeInfoType | undefined} Information about the node, or undefined if the name is invalid.
+     */
+    _getNodeFromName(nodeName: string): nodeInfoType | undefined {
+        const [_, featureIdxStr, nodeIdxStr] = nodeName.split('_');
+        if (nodeIdxStr) {
+            const nodeIdx = parseInt(nodeIdxStr);
+            const featureIdx = parseInt(featureIdxStr);
+            return {
+                featureIdx,
+                nodeIdx,
+                feature: this._parent._features.get(featureIdx) as Feature<LineString, GeoJsonProperties>,
+                node: this._parent._features.get(featureIdx)?.geometry.coordinates[nodeIdx] as Position
+            };
+        } else {
+            return;
+        }
+    }
+
+    /**
+     * Checks if a node with the given name exists in the graph.
+     *
+     * @param {string} name - The name of the node to check.
+     * @returns {boolean} True if the node exists, false otherwise.
+     */
+    hasNodeByName(name: string): boolean {
+        console.log('hasNodeByName', name, this._graph[name]);
+        return this._graph[name] !== undefined;
+    }
+
+    /**
+     * Sets a node in the graph by its unique name and coordinates.
+     *
+     * @param {string} nodeName - The unique name of the node.
+     * @param {Position} coords - The coordinates of the node.
+     * @returns {NodeGraph} The NodeGraph instance.
+     */
+    setNodeByName(nodeName: string, coords: Position): NodeGraph {
+        console.log('setNodeByName', name, coords);
+        // Add the node to the list
+        const [_, featureIdxStr] = nodeName.split('_');
+        const featureLookupArray = this._featureLookup.get(parseInt(featureIdxStr)) || [];
+        featureLookupArray.
+
+            this._graph[nodeName] = this._graph[nodeName] || {};
+        //this._nodeCoords[nodeName] = coords;
+
+        return this;
+    }
+
+    /**
+     * Removes a node from the graph by its unique name.
+     *
+     * @param {string} name - The unique name of the node to remove.
+     * @returns {NodeGraph} The NodeGraph instance.
+     */
+    removeNodeByName(name: string): NodeGraph {
+        // Add the node to the list
+        delete this._graph[name];
+        //delete this._nodeCoords[name];
+
+        if (this._edgeLookup[name] === undefined) this._edgeLookup[name] = [];
+        this._edgeLookup[name].forEach(from => {
+            this.removeEdgeByName(from, name);
+        });
+        delete this._edgeLookup[name];
+        return this;
+    }
+
+    /**
+     * Sets an edge between two nodes in the graph by their unique names.
+     *
+     * @param {string} from - The unique name of the source node.
+     * @param {string} to - The unique name of the target node.
+     * @param {number} [cost] - The cost of the edge (optional, uses default if not provided).
+     * @returns {NodeGraph} The NodeGraph instance.
+     */
+    setEdgeByName(from: string, to: string, cost?: number): NodeGraph {
+        if (!this.hasNodeByName(from)) throw new Error(`Node "${from}" does not exist`);
+        if (!this.hasNodeByName(to)) throw new Error(`Node "${to}" does not exist`);
+
+        cost = cost === undefined ? this.options.defaultEdgeValue : cost;
+        // Add the edge to the list
+        this._graph[from][to] = cost;
+
+        if (this._edgeLookup[to] === undefined) this._edgeLookup[to] = [];
+        this._edgeLookup[to].push(from);
+
+        return this;
+    }
+
+    /**
+     * Removes an edge between two nodes in the graph by their unique names.
+     *
+     * @param {string} from - The unique name of the source node.
+     * @param {string} to - The unique name of the target node.
+     */
+    removeEdgeByName(from: string, to: string) {
+        delete this._graph[from][to];
+
+        if (this._edgeLookup[to] === undefined) this._edgeLookup[to] = [];
+        this._edgeLookup[to] = this._edgeLookup[to].filter(v => v !== from);
+    }
+
+    /**
+     * Gets the cost of an edge between two nodes in the graph by their unique names.
+     *
+     * @param {string} from - The unique name of the source node.
+     * @param {string} to - The unique name of the target node.
+     * @returns {number} The cost of the edge.
+     */
+    getEdgeByName(from: string, to: string): number | undefined {
+        try {
+            return this._graph[from][to];
+        } catch (e) {
+            return;
+        }
+    }
+}
+
+/**
+ * Represents a list of GeoJSON features that can be used for routing purposes.
+ * This uses dijkstrajs for routing and rbush for spatial indexing
+ */
+export default class FeatureListRoutable extends FeatureList {
+    _features: Map<number, Feature<LineString>> = new Map();
+    _graph: NodeGraph = new NodeGraph(this);
+    _rbushTree: RBush<rbushData>;
+    _options: routeOptions;
+
+    static defaultOptions: routeOptions = {
+        costField: undefined,
+        costUnits: 'mph',
+        onewayField: undefined,
+        onewayString: undefined,
+        defaultCost: 25
+    };
+
+    /**
+     * Initializes a new instance of the FeatureListRoutable class.
+     *
+     * @param {Feature<LineString | MultiLineString>[]} features - An array of line string features to initialize the list.
+     * @param {Partial<routeOptions>} [options=FeatureListRoutable.defaultOptions] - Optional routing options.
+     */
+    constructor(features: Feature<LineString | MultiLineString>[], options: Partial<routeOptions> = FeatureListRoutable.defaultOptions) {
+        // Since super must be called before this is used, call it empty, then fill in the values
+        super([]);
+
+        this._rbushTree = new RBush(9);
+        this._options = {
+            ...FeatureListRoutable.defaultOptions,
+            ...options,
+        };
+
+        features.map(feature => this.add(feature));
+    }
+
+    /**
+     * Adds a line string or multi-line string feature to the list.
+     *
+     * @param {Feature<LineString | MultiLineString, GeoJsonProperties>} feature - The feature to add.
+     * @returns {number} The index of the added feature in the list.
+     */
+    add(feature: Feature<LineString | MultiLineString, GeoJsonProperties>): number {
+        let maxIdx = -Infinity;
+
+        if (feature.geometry.type === 'MultiLineString') {
+            // Split up multi-line strings into single line strings
+            feature.geometry.coordinates.forEach((lineStringCoords) => {
+                const lineStringFeature = FeatureList.feature(
+                    { type: 'LineString', coordinates: lineStringCoords },
+                    feature.properties
+                ) as Feature<LineString>;
+                maxIdx = this.addLine(lineStringFeature as Feature<LineString>);
+            });
+        } else {
+            maxIdx = this.addLine(feature as Feature<LineString>);
+        }
+
+        return maxIdx;
+    }
+
+    /**
+     * Removes a feature from the list and related indexes.
+     *
+     * @param {number} featureIdx - The index of the feature to remove.
+     */
+    remove(featureIdx: number): void {
+        this.removeLine(featureIdx);
+        super.remove(featureIdx);
+        // You may add code here to remove the feature from additional indexes if needed.
+    }
+
+    /**
+     * Adds a line string feature to the feature collection, updating the spatial index tree and graph connections.
+     *
+     * @param {Feature<LineString>} lineString - The line string feature to add.
+     * @returns {number} The index of the added feature in the collection.
+     */
+    addLine(lineString: Feature<LineString>): number {
+        // Add the line string feature to the collection and get its index
+        const featureIdx = super.add(lineString);
+
+        const coords = lineString.geometry.coordinates;
+
+        // Add all line segments to the spatial index tree
+        for (let pointIdx = 1; pointIdx < coords.length; pointIdx++) {
+            const [endLng, endLat] = coords[pointIdx];
+            const { x: endX, y: endY } = WGS84ToWebMercator(endLng, endLat);
+
+            const [startLng, startLat] = coords[pointIdx - 1];
+            const { x: startX, y: startY } = WGS84ToWebMercator(startLng, startLat);
+
+            // Insert the segment into the spatial index tree
+            this._rbushTree.insert({
+                minX: Math.min(startX, endX),
+                minY: Math.min(startY, endY),
+                maxX: Math.max(startX, endX),
+                maxY: Math.max(startY, endY),
+                featureIdx,
+                startNode: [startX, startY],
+                endNode: [endX, endY],
+                startIdx: pointIdx - 1,
+                endIdx: pointIdx
+            });
+        }
+
+        // Extract options for cost calculation
+        const { defaultCost, costField, onewayField } = this._options;
+
+        // Define a function to convert cost units
+        const convertUnits = (units: 'kph' | 'mph' | 'other', rawCost: number) => {
+            switch (units) {
+                case 'kph':
+                    return rawCost * (1 / 1000);
+                case 'mph':
+                    return rawCost * (1 / 1609.34);
+                case 'other':
+                    return rawCost;
+            }
+        };
+
+        // Calculate the cost of the line segment based on options
+        const rawCost = (costField !== undefined && lineString.properties) ? (lineString.properties[costField] || defaultCost) : defaultCost;
+        const cost = convertUnits(this._options.costUnits, rawCost);
+
+        // Calculate the length of the line string
+        const length = this.lineLength(coords);
+
+        // Create start and end nodes for the line string
+        const startNode = { nodeIdx: 0, featureIdx };
+        const endNode = { nodeIdx: coords.length - 1, featureIdx };
+
+        // Determine if the line is one-way based on options
+        const onewayString = Array.isArray(this._options.onewayString) ? this._options.onewayString : [this._options.onewayString];
+        const isOneWay = (lineString.properties && onewayField && lineString.properties[onewayField] && onewayString.includes(lineString.properties[onewayField]));
+
+        // Add the graph connections for the line string
+        this.addGraphConnection(startNode, endNode, cost * length, isOneWay, true);
+
+        // Check for intersections with other lines
+        this._matchTestPoint(startNode);
+        this._matchTestPoint(endNode);
+
+        return featureIdx;
+    }
+
+
+    /**
+     * Compares two positions for equality.
+     *
+     * @param {Position} coordA - The first position to compare.
+     * @param {Position} coordB - The second position to compare.
+     * @returns {boolean} `true` if the positions are equal, `false` otherwise.
+     */
+    _comparePositions(coordA: Position, coordB: Position): boolean {
+        return coordA[0] === coordB[0] && coordA[1] === coordB[1];
+    }
+
+    /**
+     * Finds and adds graph connections for nearby points within a specified distance.
+     *
+     * @param {nodeInfoType} testPoint - The point to test and find nearby connections.
+     * @param {number} [distanceInMeters=1] - The maximum distance in meters to consider for nearby points.
+     * @param {RBush<rbushData>} [tree=this._rbushTree] - The spatial index tree to search for nearby points.
+     */
+    _matchTestPoint(testPoint: nodeInfoType, distanceInMeters: number = 1, tree: RBush<rbushData> = this._rbushTree) {
+        testPoint.featureIdx > 55 && console.log('a', testPoint);
+        if (!testPoint.node) {
+            testPoint.node = this._features.get(testPoint.featureIdx)?.geometry.coordinates[testPoint.nodeIdx];
+            testPoint.featureIdx > 55 && console.log('b', testPoint);
+        }
+        if (testPoint.node) {
+            const coords3857 = WGS84ToWebMercator(testPoint.node[0], testPoint.node[1]);
+            const min = [coords3857.x - (distanceInMeters / 2), coords3857.y - (distanceInMeters / 2)];  //polarToCartesian(testPoint.node, (5 / 4) * Math.PI, distanceInMeters);
+            const max = [coords3857.x + (distanceInMeters / 2), coords3857.y + (distanceInMeters / 2)];  //polarToCartesian(testPoint.node, (1 / 4) * Math.PI, distanceInMeters);
+            const nearbyLines = tree.search({ minX: min[0], minY: min[1], maxX: max[0], maxY: max[1] });
+            nearbyLines.filter(line => line.featureIdx !== testPoint.featureIdx).forEach(neighbor => {
+                testPoint.featureIdx > 55 && console.log('a', testPoint, coords3857, neighbor);
+                if (!testPoint.node) return;
+                if (this._comparePositions([coords3857.x, coords3857.y], neighbor.endNode)) {
+                    console.log('f', testPoint, { 'featureIdx': neighbor.featureIdx, 'nodeIdx': neighbor.endIdx });
+
+                    this.addGraphConnection(testPoint, { 'featureIdx': neighbor.featureIdx, 'nodeIdx': neighbor.endIdx }, 0, false, false);
+                }
+                if (this._comparePositions(testPoint.node, neighbor.startNode)) {
+                    console.log('g', testPoint, { 'featureIdx': neighbor.featureIdx, 'nodeIdx': 0 });
+
+                    this.addGraphConnection({ 'featureIdx': neighbor.featureIdx, 'nodeIdx': 0 }, testPoint, 0, false, false);
+                }
+            });
+        }
+    }
+
+    /**
+     * Removes a line feature from the collection and associated data structures.
+     *
+     * @param {number} featureIdx - The index of the line feature to be removed.
+     */
+    removeLine(featureIdx: number): void {
+        const lineString = this._features.get(featureIdx);
+
+        if (lineString) {
+            const coords = lineString.geometry.coordinates;
+
+            // Remove all segments in the segment rbush index
+            for (let pointIdx = 0; pointIdx < coords.length; pointIdx++) {
+                const [endLng, endLat] = coords[pointIdx];
+                const { x: endX, y: endY } = WGS84ToWebMercator(endLng, endLat);
+
+                if (pointIdx > 0) {
+                    const [startLng, startLat] = coords[pointIdx - 1]; // Use pointIdx - 1 to get the start coordinates
+                    const { x: startX, y: startY } = WGS84ToWebMercator(startLng, startLat);
+
+                    // Calculate the bounding box of the segment
+                    const bbox = {
+                        minX: Math.min(startX, endX),
+                        minY: Math.min(startY, endY),
+                        maxX: Math.max(startX, endX),
+                        maxY: Math.max(startY, endY)
+                    };
+
+                    // Find and remove references to the segment in the rbush tree
+                    const refs = this._rbushTree.search(bbox);
+                    refs
+                        .filter(ref => ref.featureIdx === featureIdx)
+                        .forEach(ref => this._rbushTree.remove(ref));
+                }
+            }
+
+            // Remove the feature from the graph
+            const startNode = { nodeIdx: 0, featureIdx };
+            const endNode = { nodeIdx: coords.length - 1, featureIdx };
+            this.removeGraphConnection(startNode, endNode, false, true);
+        }
+    }
+
+
+    /**
+     * Adds a connection between two nodes in the graph.
+     *
+     * @param {nodeInfoType} startNode - The starting node.
+     * @param {nodeInfoType} endNode - The ending node.
+     * @param {number} cost - the cost * length cost of the connection.
+     * @param {boolean} oneway - Indicates if the connection is one-way (default is false).
+     * @param {boolean} addNodes - Indicates whether to add the nodes to the graph if they don't exist (default is false).
+     */
+    addGraphConnection(startNode: nodeInfoType, endNode: nodeInfoType, cost: number, oneway: boolean = false) {
+        this._graph.setNode(startNode);
+        this._graph.setNode(endNode);
+
+        this._graph.setEdge(startNode, endNode, cost);
+
+        // Add the reverse direction if not one-way.
+        if (!oneway) {
+            this._graph.setEdge(endNode, startNode, cost);
+        }
+    }
+
+    /**
+     * Removes a connection between two nodes in the graph.
+     *
+     * @param {nodeInfoType} startNode - The starting node.
+     * @param {nodeInfoType} endNode - The ending node.
+     * @param {boolean} oneway - Indicates if the connection is one-way (default is false).
+     * @param {boolean} removeNodes - Indicates whether to remove the nodes from the graph if they are isolated (default is false).
+     */
+    removeGraphConnection(startNode: nodeInfoType, endNode: nodeInfoType, oneway: boolean = false, removeNodes: boolean = false) {
+        this._graph.removeEdge(startNode, endNode);
+
+        // Remove the reverse direction if not one-way.
+        if (!oneway) {
+            this._graph.removeEdge(endNode, startNode);
+        }
+
+        if (removeNodes) {
+            // Optionally remove isolated nodes.
+            this._graph.removeNode(startNode);
+            this._graph.removeNode(endNode);
+            // TODO remove mid nodes
+        }
+    }
+
+    /**
+     * Calculates the length of a line represented by an array of coordinates.
+     *
+     * @param {LineString['coordinates']} coords - The coordinates of the line.
+     *
+     * @returns {number} - The length of the line in meters.
+     */
+    lineLength(coords: LineString['coordinates']): number {
+        // Since we already import geokdbush, we might as well use it for this.
+        let sum = 0;
+        for (let i = 1; i < coords.length; i++) {
+            const prevCoord = coords[i - 1];
+            const coord = coords[i] || prevCoord;
+            sum += euclideanDistance(prevCoord, coord) * 1000; // Convert to meters.
+        }
+        return sum;
+    }
+
+
+    /**
+     * Gets the closest intersection point to a given click point and provides from info about the feature it should be part of.
+     *
+     * @param {Position} clickPoint4326 - The click point in WGS84 coordinates (longitude, latitude).
+     * @param {number} toleranceInMeters - The tolerance in web mercator meters for identifying the closest point (default is 0).
+     *
+     * @returns {intersectionPointInfo | undefined} - Information about the closest intersection point or undefined if not found.
+     */
+    getClosestPointInfo(clickPoint4326: Position, toleranceInMeters: number = 0): intersectionPointInfo | undefined {
+        // Convert the click point to Web Mercator since the index is in Web Mercator.
+        const clickPointWebMerc = WGS84ToWebMercator(clickPoint4326[0], clickPoint4326[1]);
+
+        // Create a bounding box (bbox) around the click point for bbox intersection.
+        const clickPointBbox = {
+            minX: clickPointWebMerc.x - (toleranceInMeters / 2),
+            minY: clickPointWebMerc.y - (toleranceInMeters / 2),
+            maxX: clickPointWebMerc.x + (toleranceInMeters / 2),
+            maxY: clickPointWebMerc.y + (toleranceInMeters / 2),
+        };
+
+        // Look for line segments that intersect the bbox.
+        const closestNeighbors = this._rbushTree.search(clickPointBbox);
+
+        // Process the closest neighbors.
+        // Find the segment that is actually closest to the click point.
+        const closestPoints = closestNeighbors.map(neighbor => {
+            // Get the feature the idx was referring to.
+            const feature = this.getFeature(neighbor.featureIdx);
+
+            const defaultValues: intersectionPointInfo = {
+                clickPoint4326,
+                nearestPoint: undefined,
+                nearestPointWGS84: undefined,
+                distanceInMeters: Infinity,
+                featureIdx: neighbor.featureIdx,
+                startNodeIdx: 0,
+                endNodeIdx: neighbor.endIdx
+            }
+
+            // Convert the segment start and end into Web Mercator.
+            const start = WGS84ToWebMercator(neighbor.startNode[0], neighbor.startNode[1]);
+            const end = WGS84ToWebMercator(neighbor.endNode[0], neighbor.endNode[1]);
+
+            if (feature) {
+                // Find the nearest point on the segment between start and end.
+                const nearestPoint = nearestPointOnLineSegment(
+                    [clickPointWebMerc.x, clickPointWebMerc.y],
+                    [[start.x, start.y], [end.x, end.y]],
+                    'euclidean'
+                );
+
+                // Convert the nearest point back to WGS84 for simplicity.
+                const nearestPointWGS84 = WebMercatorToWGS84(nearestPoint[0], nearestPoint[1]);
+
+                // Update the nearestPoint (3857 and 4326) and return the distance from the click point in 3857 meters for sorting.
+                return {
+                    ...defaultValues,
+                    nearestPoint,
+                    nearestPointWGS84: [nearestPointWGS84.lng, nearestPointWGS84.lat],
+                    distanceInMeters: euclideanDistance([clickPointWebMerc.x, clickPointWebMerc.y], nearestPoint)
+                }
+            } else {
+                return defaultValues;
+            }
+        }).sort((pt1, pt2) => pt1.distanceInMeters - pt2.distanceInMeters);
+
+        return closestPoints[0];
+    }
+
+
+    /**
+     * Splits a line feature at an intersection point and creates two new line features.
+     *
+     * @param {Partial<intersectionPointInfo> & { featureIdx: number, startNodeIdx: number, endNodeIdx: number, nearestPointWGS84: Position }} intersectionPoint - Information about the intersection point and feature.
+     * @returns {[number, number] | undefined} - An array with indices of the two newly created features or undefined if the features weren't created.
+     */
+    splitFeatureAtIntersectionPoint(intersectionPoint: Partial<intersectionPointInfo> & { featureIdx: number, startNodeIdx: number, endNodeIdx: number, nearestPointWGS84: Position }): [number, number] | undefined {
+        // Retrieve the feature based on the featureIdx.
+        const feature = this._features.get(intersectionPoint.featureIdx);
+
+        if (feature) {
+            // Create a base feature for LineString.
+            const baseFeature: Feature<LineString> = {
+                properties: JSON.parse(JSON.stringify(feature.properties)),
+                type: 'Feature',
+                geometry: {
+                    type: 'LineString',
+                    coordinates: []
+                }
+            }
+
+            // Create two features by splitting the original feature.
+            const featureA: Feature<LineString> = {
+                ...baseFeature,
+                geometry: {
+                    ...baseFeature.geometry,
+                    coordinates: [...feature.geometry.coordinates.slice(0, intersectionPoint.startNodeIdx), intersectionPoint.nearestPointWGS84]
+                }
+            };
+
+            const featureB: Feature<LineString> = {
+                ...baseFeature,
+                geometry: {
+                    ...baseFeature.geometry,
+                    coordinates: [intersectionPoint.nearestPointWGS84, ...feature.geometry.coordinates.slice(intersectionPoint.endNodeIdx)]
+                }
+            };
+
+            // Remove the original feature and add the new features
+            this.remove(intersectionPoint.featureIdx);
+            const featureAIdx = this.add(featureA);
+            const featureBIdx = this.add(featureB);
+
+            return [featureAIdx, featureBIdx];
+        } else {
+            // Return undefined if the feature doesn't exist.
+            return undefined;
+        }
+    }
+
+
+    /**
+     * Adds a point on a line feature at the closest intersection point to a given click point.
+     *
+     * @param {Position} clickPoint4326 - The click point in WGS 84 coordinates.
+     * @param {number} toleranceInMeters - Tolerance for finding the closest intersection point in meters (default is 0).
+     * @returns {Position | undefined} - The position of the added point or undefined if no intersection point is found.
+     */
+    addPointOnLine(clickPoint4326: Position, toleranceInMeters: number = 0): Position | undefined {
+        // Get information about the closest intersection point.
+        const intersectionPoint = this.getClosestPointInfo(clickPoint4326, toleranceInMeters);
+
+        // Check if an intersection point is found and if it has nearestPointWGS84.
+        if (!intersectionPoint || !intersectionPoint.nearestPointWGS84) {
+            return undefined;
+        }
+
+        // Split the feature at the intersection point.
+        const { nearestPointWGS84 } = intersectionPoint;
+        const features = this.splitFeatureAtIntersectionPoint({ ...intersectionPoint, nearestPointWGS84 });
+
+        // Return the nearestPointWGS84 if features are successfully split.
+        return features ? intersectionPoint.nearestPointWGS84 : undefined;
+    }
+
+    /**
+     * Routes between two points on a map.
+     *
+     * @param {Position} start4326 - The starting point in WGS 84 coordinates.
+     * @param {Position} end4326 - The ending point in WGS 84 coordinates.
+     * @returns {Route} - The route between the two points.
+     * @throws {Error} Throws an error if start or end points are not found or if there's an error with the nodes.
+     */
+    routePoints(start4326: Position, end4326: Position): Feature<LineString, GeoJsonProperties> {
+        // Get information about the closest points to start and end coordinates.
+        const nodeAInfo = this.getClosestPointInfo(start4326, 0);
+        const nodeBInfo = this.getClosestPointInfo(end4326, 0);
+
+        /**
+         * Get node information based on intersectionPointInfo and target coordinates.
+         *
+         * @param {intersectionPointInfo} nodeInfo - Information about the closest point.
+         * @param {Position} targetCoord - The target coordinate to compare.
+         * @returns {nodeInfoType | undefined} - Node information or undefined if not found.
+         */
+        const getNodeInfo = (nodeInfo: intersectionPointInfo, targetCoord: Position): nodeInfoType | undefined => {
+            let match: number = -1;
+            const feature = this.getFeature(nodeInfo.featureIdx) as Feature<LineString>;
+
+            // Check if the target coordinate matches the start or end of the feature.
+            const startPt = feature.geometry.coordinates[nodeInfo.startNodeIdx];
+            if (this._comparePositions(targetCoord, startPt)) match = nodeInfo.startNodeIdx;
+            const endPt = feature.geometry.coordinates[nodeInfo.endNodeIdx];
+            if (match < 0 && this._comparePositions(targetCoord, endPt)) match = nodeInfo.endNodeIdx;
+
+            return match === -1 ? undefined : {
+                featureIdx: nodeInfo.featureIdx,
+                nodeIdx: match
+            };
+        };
+
+        // Check if node information is available, throw an error if not.
+        if (!nodeAInfo || !nodeBInfo) {
+            throw new Error(`Cannot find ${!nodeAInfo ? 'start' : 'end'} node`);
+        }
+
+        // Retrieve node information based on the closest points.
+        const nodeA = getNodeInfo(nodeAInfo, start4326);
+        const nodeB = getNodeInfo(nodeBInfo, end4326);
+
+        // Check if node information is available, throw an error if not.
+        if (!nodeA || !nodeB) {
+            throw new Error(`Error with ${!nodeA ? 'start' : 'end'} node`);
+        }
+
+        // Route between the two nodes.
+        return this.routeNodes(nodeA, nodeB);
+    }
+
+
+    routeNodes(nodeA: nodeInfoType, nodeB: nodeInfoType) {
+        // Convert graphlib graph to dijkstrajs-compatible format
+        const dijkstraGraph: dijkstrajs.Graph = this._graph._graph;
+        const nodeAName = this._graph._getNodeName(nodeA);
+        const nodeBName = this._graph._getNodeName(nodeB);
+        const nodesInPath = dijkstrajs.find_path(dijkstraGraph, nodeAName, nodeBName);
+
+        // Accumulators
+        const routeCoords: LineString['coordinates'] = [];
+        let distance = 0;
+        let cost = 0;
+
+        for (let i = 0; i < nodesInPath.length; i++) {
+            const currNode = this._graph._getNodeFromName(nodesInPath[i]);
+            const prevNode = i > 0 && this._graph._getNodeFromName(nodesInPath[i - 1]);
+
+            if (currNode) {
+                const { featureIdx, nodeIdx: pointIdx } = currNode;
+                const feature = this._features.get(featureIdx);
+                const node: Position | undefined = feature?.geometry.coordinates[pointIdx];
+                if (node) {
+                    routeCoords.push(node);
+
+
+                    if (prevNode) {
+                        const { featureIdx: prevFeatureIdx, nodeIdx: prevPointIdx } = prevNode;
+                        const prevFeature = this._features.get(prevFeatureIdx);
+                        const prevPoint: Position | undefined = prevFeature?.geometry.coordinates[prevPointIdx];
+
+                        if (prevPoint) {
+                            distance += euclideanDistance(prevPoint, node) * 1000;
+                            cost += this._graph.getEdge(currNode, prevNode) || 0;
+                        }
+
+                        // TODO maybe add the names of each segment here
+                        // when the name changes, add a "turn x degrees" onto the next segment
+                        // it can do continue straight, turn slight left, turn slight right, turn left turn right, turn hard left, turn hard right, or make a u-turn
+                    }
+                }
+            }
+        }
+
+        const routeLine: Feature<LineString> = {
+            'type': 'Feature',
+            'properties': {
+                distance,
+                cost,
+                meanCost: cost / distance
+            },
+            'geometry': {
+                'type': 'LineString',
+                'coordinates': routeCoords
+            }
+        }
+
+        return routeLine;
+    }
+};

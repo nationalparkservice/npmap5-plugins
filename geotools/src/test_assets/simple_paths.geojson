@@ -1,0 +1,157 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "top"
+            },
+            "geometry": {
+                "coordinates": [
+                    [
+                        -84.51172645805109,
+                        45.79181383628176
+                    ],
+                    [
+                        -84.44150083239485,
+                        45.78254068909371
+                    ]
+                ],
+                "type": "LineString"
+            },
+            "id": 0
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "middle"
+            },
+            "geometry": {
+                "coordinates": [
+                    [
+                        -84.51498152542133,
+                        45.77738635524352
+                    ],
+                    [
+                        -84.48194630466334,
+                        45.773172401398
+                    ],
+                    [
+                        -84.44528266238252,
+                        45.768397591984495
+                    ]
+                ],
+                "type": "LineString"
+            },
+            "id": 1
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "bottom"
+            },
+            "geometry": {
+                "coordinates": [
+                    [
+                        -84.51680279474421,
+                        45.76621982129711
+                    ],
+                    [
+                        -84.44681301388033,
+                        45.757522263092056
+                    ]
+                ],
+                "type": "LineString"
+            },
+            "id": 2
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "diagonal"
+            },
+            "geometry": {
+                "coordinates": [
+                    [
+                        -84.44150083239485,
+                        45.78254068909371
+                    ],
+                    [
+                        -84.46105838416353,
+                        45.778005326279185
+                    ],
+                    [
+                        -84.48194630466334,
+                        45.773172401398
+                    ],
+                    [
+                        -84.51680279474421,
+                        45.76621982129711
+                    ]
+                ],
+                "type": "LineString"
+            },
+            "id": 3
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "right"
+            },
+            "geometry": {
+                "coordinates": [
+                    [
+                        -84.44528266238252,
+                        45.768397591984495
+                    ],
+                    [
+                        -84.44681301388033,
+                        45.757522263092056
+                    ]
+                ],
+                "type": "LineString"
+            },
+            "id": 4
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "left"
+            },
+            "geometry": {
+                "coordinates": [
+                    [
+                        -84.51172645805109,
+                        45.79181383628176
+                    ],
+                    [
+                        -84.51498152542133,
+                        45.77738635524352
+                    ]
+                ],
+                "type": "LineString"
+            },
+            "id": 5
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "name": "dead end"
+            },
+            "geometry": {
+                "coordinates": [
+                    [
+                        -84.46105838416353,
+                        45.778005326279185
+                    ],
+                    [
+                        -84.42909470389928,
+                        45.77385174876568
+                    ]
+                ],
+                "type": "LineString"
+            },
+            "id": 6
+        }
+    ]
+}
