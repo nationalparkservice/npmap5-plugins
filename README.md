@@ -1,4 +1,4 @@
-# NPMap5 PLugin Monorepo
+# NPMap5 Plugin Monorepo
 
 This monorepo contains a collection of plugins designed to enhance the functionality of maps, with a focus on the National Park Service. Each plugin has its unique purpose and has been optimized for use with MapLibre and NPMap. Below is a list of the available plugins in this monorepo:
 
