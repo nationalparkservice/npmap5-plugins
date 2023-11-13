@@ -35,4 +35,4 @@ An error if the regular expression is invalid.
 
 #### Defined in
 
-handlebars/regexpMatch.ts:10
+[handlebars/regexpMatch.ts:10](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/handlebars/regexpMatch.ts#L10)

@@ -31,4 +31,4 @@ The integer value of the string.
 
 #### Defined in
 
-handlebars/toString.ts:9
+[handlebars/toString.ts:9](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/handlebars/toString.ts#L9)

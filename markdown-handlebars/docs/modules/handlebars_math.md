@@ -35,7 +35,7 @@
 
 #### Defined in
 
-handlebars/math.ts:4
+[handlebars/math.ts:4](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/handlebars/math.ts#L4)
 
 ## Functions
 
@@ -65,4 +65,4 @@ If an invalid Math function name is provided.
 
 #### Defined in
 
-handlebars/math.ts:24
+[handlebars/math.ts:24](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/handlebars/math.ts#L24)

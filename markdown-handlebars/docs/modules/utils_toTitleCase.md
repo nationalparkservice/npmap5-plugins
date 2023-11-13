@@ -27,4 +27,4 @@
 
 #### Defined in
 
-utils/toTitleCase.ts:27
+[utils/toTitleCase.ts:27](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/utils/toTitleCase.ts#L27)

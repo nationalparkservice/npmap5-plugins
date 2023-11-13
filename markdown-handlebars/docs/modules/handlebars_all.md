@@ -30,4 +30,4 @@ Returns 'true' if all arguments are truthy, otherwise returns an empty string.
 
 #### Defined in
 
-handlebars/all.ts:6
+[handlebars/all.ts:6](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/handlebars/all.ts#L6)

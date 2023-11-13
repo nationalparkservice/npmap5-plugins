@@ -31,4 +31,4 @@ The HTML string for the icon image.
 
 #### Defined in
 
-handlebars/icon.ts:27
+[handlebars/icon.ts:27](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/handlebars/icon.ts#L27)

@@ -33,4 +33,4 @@ The outer HTML of the created element, including its tag name, attributes, and i
 
 #### Defined in
 
-handlebars/htmlElement.ts:22
+[handlebars/htmlElement.ts:22](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/handlebars/htmlElement.ts#L22)

@@ -34,7 +34,7 @@ A string representing the time difference between datetime1 and datetime2, in hu
 
 #### Defined in
 
-handlebars/timediffStr.ts:34
+[handlebars/timediffStr.ts:34](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/handlebars/timediffStr.ts#L34)
 
 ___
 
@@ -60,4 +60,4 @@ A Day.js object representing the parsed date and time.
 
 #### Defined in
 
-handlebars/timediffStr.ts:10
+[handlebars/timediffStr.ts:10](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/handlebars/timediffStr.ts#L10)

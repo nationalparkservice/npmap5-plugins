@@ -31,4 +31,4 @@ The converted JSON values.
 
 #### Defined in
 
-handlebars/json.ts:8
+[handlebars/json.ts:8](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/handlebars/json.ts#L8)

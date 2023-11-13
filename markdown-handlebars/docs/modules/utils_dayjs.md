@@ -31,4 +31,4 @@ A Day.js object representing the parsed datetime string in the specified timezon
 
 #### Defined in
 
-utils/dayjs.ts:12
+[utils/dayjs.ts:12](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/utils/dayjs.ts#L12)

@@ -30,4 +30,4 @@
 
 #### Defined in
 
-handlebars/ifCond.ts:18
+[handlebars/ifCond.ts:18](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/handlebars/ifCond.ts#L18)

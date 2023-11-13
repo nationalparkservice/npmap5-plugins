@@ -6,7 +6,6 @@ import anyToString from "../utils/anyToString";
  * @returns The first non-empty string value found in the arguments array.
  */
 export default function coalesce(...values: any[]): string {
-    console.log('coalesce INPUT VALUES', values);
     const filteredValues = values
         .filter((v, i) => v && anyToString(v).length && i < values.length - 1) as string[];
     return filteredValues[0] ? anyToString(filteredValues[0]) : ''

@@ -33,7 +33,7 @@
 
 #### Defined in
 
-lintHelper.ts:18
+[lintHelper.ts:18](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/lintHelper.ts#L18)
 
 ___
 
@@ -43,4 +43,4 @@ ___
 
 #### Defined in
 
-lintHelper.ts:17
+[lintHelper.ts:17](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/lintHelper.ts#L17)

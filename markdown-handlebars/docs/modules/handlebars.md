@@ -25,7 +25,7 @@
 | `datetime` | (`datetime`: `any`, `format`: `string`, `tz?`: `string`) => `string` |
 | `each` | (`this`: `any`, `ctx`: `any`, `options`: `HelperOptions`) => `string` |
 | `feature` | (`handlebarsExpression`: `string`, `options`: `HelperOptions`) => `string` \| `object` |
-| `hash` | (`options`: `HelperOptions`) => { `[key: string]`: `unknown`;  } |
+| `hash` | (`options`: `HelperOptions`) => \{ `[key: string]`: `unknown`;  } |
 | `htmlElement` | (`this`: `any`, `type`: keyof `HTMLElementTagNameMap`, `options`: `HelperOptions`) => `string` |
 | `icon` | (`iconName`: `string`, ...`args`: `any`[]) => `string` |
 | `ifCompare` | (`v1`: `any`, `operator`: `string`, `v2`: `any`) => `string` |
@@ -38,9 +38,9 @@
 | `math` | (`this`: `any`, `fnName`: `string`, ...`values`: `any`) => `number` |
 | `regexpMatch` | (`str`: `string`, `exp`: `string`) => `RegExpMatchArray` \| ``null`` |
 | `regexpReplace` | (`str`: `string`, `exp`: `string`, `replacement`: `string`) => `string` |
-| `set` | (`this`: { `[key: string]`: `any`;  }, `options`: `HelperOptions`) => `void` |
+| `set` | (`this`: \{ `[key: string]`: `any`;  }, `options`: `HelperOptions`) => `void` |
 | `split` | (`str`: `string`, `options`: `HelperOptions`) => `string`[] \| ``""`` |
-| `table` | (`rows`: `string` \| `Record`<`string`, `unknown`\>, `options`: `HelperOptions`) => `string` |
+| `table` | (`rows`: `string` \| `Record`\<`string`, `unknown`\>, `options`: `HelperOptions`) => `string` |
 | `timediff` | (`datetime1`: `any`, `tz1`: `string`, `datetime2`: `any`, `tz2`: `string`) => `number` |
 | `timediffStr` | (`datetime1`: `any`, `tz1`: `string`, `datetime2`: `any`, `tz2`: `string`) => `string` |
 | `toInt` | (`str`: `string`) => `number` |
@@ -52,4 +52,4 @@
 
 #### Defined in
 
-handlebars/index.ts:33
+[handlebars/index.ts:33](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/handlebars/index.ts#L33)

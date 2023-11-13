@@ -30,4 +30,4 @@ The string in uppercase.
 
 #### Defined in
 
-handlebars/toUpperCase.ts:8
+[handlebars/toUpperCase.ts:8](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/handlebars/toUpperCase.ts#L8)

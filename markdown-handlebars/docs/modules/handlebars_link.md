@@ -31,4 +31,4 @@ The HTML string for the link element.
 
 #### Defined in
 
-handlebars/link.ts:9
+[handlebars/link.ts:9](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/handlebars/link.ts#L9)

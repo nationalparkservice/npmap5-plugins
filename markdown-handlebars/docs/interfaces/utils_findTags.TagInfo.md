@@ -21,7 +21,7 @@
 
 #### Defined in
 
-utils/findTags.ts:2
+[utils/findTags.ts:2](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/utils/findTags.ts#L2)
 
 ___
 
@@ -31,7 +31,7 @@ ___
 
 #### Defined in
 
-utils/findTags.ts:4
+[utils/findTags.ts:4](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/utils/findTags.ts#L4)
 
 ___
 
@@ -41,7 +41,7 @@ ___
 
 #### Defined in
 
-utils/findTags.ts:5
+[utils/findTags.ts:5](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/utils/findTags.ts#L5)
 
 ___
 
@@ -51,4 +51,4 @@ ___
 
 #### Defined in
 
-utils/findTags.ts:3
+[utils/findTags.ts:3](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/utils/findTags.ts#L3)

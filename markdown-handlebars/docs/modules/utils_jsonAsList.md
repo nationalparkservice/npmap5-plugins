@@ -31,4 +31,4 @@ Generates a nested HTML list (ul or ol) from a JSON string or object.
 
 #### Defined in
 
-utils/jsonAsList.ts:10
+[utils/jsonAsList.ts:10](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/utils/jsonAsList.ts#L10)

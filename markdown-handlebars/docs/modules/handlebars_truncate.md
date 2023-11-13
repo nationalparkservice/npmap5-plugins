@@ -34,4 +34,4 @@ The truncated string with the specified options and formatting.
 
 #### Defined in
 
-handlebars/truncate.ts:14
+[handlebars/truncate.ts:14](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/handlebars/truncate.ts#L14)

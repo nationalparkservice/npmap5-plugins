@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1697832709214" clover="3.2.0">
-  <project timestamp="1697832709214" name="All files">
-    <metrics statements="1398" coveredstatements="1318" conditionals="292" coveredconditionals="238" methods="90" coveredmethods="76" elements="1780" coveredelements="1632" complexity="0" loc="1398" ncloc="1398" packages="3" files="43" classes="43"/>
+<coverage generated="1699912885347" clover="3.2.0">
+  <project timestamp="1699912885347" name="All files">
+    <metrics statements="1397" coveredstatements="1317" conditionals="292" coveredconditionals="238" methods="90" coveredmethods="76" elements="1779" coveredelements="1631" complexity="0" loc="1397" ncloc="1397" packages="3" files="43" classes="43"/>
     <package name="src">
       <metrics statements="246" coveredstatements="195" conditionals="30" coveredconditionals="22" methods="10" coveredmethods="9"/>
       <file name="lintHelper.ts" path="/home/jim/dev/npmap5-plugins/markdown-handlebars/src/lintHelper.ts">
@@ -255,7 +255,7 @@
       </file>
     </package>
     <package name="src.handlebars">
-      <metrics statements="857" coveredstatements="833" conditionals="182" coveredconditionals="143" methods="69" coveredmethods="56"/>
+      <metrics statements="856" coveredstatements="832" conditionals="182" coveredconditionals="143" methods="69" coveredmethods="56"/>
       <file name="all.ts" path="/home/jim/dev/npmap5-plugins/markdown-handlebars/src/handlebars/all.ts">
         <metrics statements="12" coveredstatements="12" conditionals="4" coveredconditionals="4" methods="1" coveredmethods="1"/>
         <line num="1" count="1" type="stmt"/>
@@ -285,7 +285,7 @@
         <line num="10" count="3" type="stmt"/>
       </file>
       <file name="coalesce.ts" path="/home/jim/dev/npmap5-plugins/markdown-handlebars/src/handlebars/coalesce.ts">
-        <metrics statements="13" coveredstatements="13" conditionals="6" coveredconditionals="6" methods="1" coveredmethods="1"/>
+        <metrics statements="12" coveredstatements="12" conditionals="6" coveredconditionals="6" methods="1" coveredmethods="1"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
@@ -295,10 +295,9 @@
         <line num="7" count="1" type="stmt"/>
         <line num="8" count="5" type="cond" truecount="1" falsecount="0"/>
         <line num="9" count="5" type="stmt"/>
-        <line num="10" count="5" type="stmt"/>
-        <line num="11" count="5" type="cond" truecount="3" falsecount="0"/>
-        <line num="12" count="5" type="cond" truecount="2" falsecount="0"/>
-        <line num="13" count="5" type="stmt"/>
+        <line num="10" count="5" type="cond" truecount="3" falsecount="0"/>
+        <line num="11" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="12" count="5" type="stmt"/>
       </file>
       <file name="color.ts" path="/home/jim/dev/npmap5-plugins/markdown-handlebars/src/handlebars/color.ts">
         <metrics statements="24" coveredstatements="24" conditionals="2" coveredconditionals="1" methods="1" coveredmethods="1"/>

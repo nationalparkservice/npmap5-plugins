@@ -31,4 +31,4 @@ The floating point number value of the string.
 
 #### Defined in
 
-handlebars/toNumber.ts:9
+[handlebars/toNumber.ts:9](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/handlebars/toNumber.ts#L9)

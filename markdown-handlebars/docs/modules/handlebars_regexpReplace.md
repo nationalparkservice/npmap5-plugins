@@ -36,4 +36,4 @@ An error if the regular expression is invalid.
 
 #### Defined in
 
-handlebars/regexpReplace.ts:11
+[handlebars/regexpReplace.ts:11](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/handlebars/regexpReplace.ts#L11)

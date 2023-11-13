@@ -30,4 +30,4 @@ The integer value of the string.
 
 #### Defined in
 
-handlebars/toInt.ts:6
+[handlebars/toInt.ts:6](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/handlebars/toInt.ts#L6)

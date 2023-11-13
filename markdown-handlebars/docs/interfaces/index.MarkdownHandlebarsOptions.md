@@ -37,7 +37,7 @@
 
 #### Defined in
 
-index.ts:25
+[index.ts:25](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/index.ts#L25)
 
 ___
 
@@ -51,7 +51,7 @@ ___
 
 #### Defined in
 
-index.ts:38
+[index.ts:38](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/index.ts#L38)
 
 ___
 
@@ -64,7 +64,7 @@ More info on these can be found here:
 
 #### Defined in
 
-index.ts:31
+[index.ts:31](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/index.ts#L31)
 
 ___
 
@@ -77,7 +77,7 @@ More info here:
 
 #### Defined in
 
-index.ts:36
+[index.ts:36](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/index.ts#L36)
 
 ___
 
@@ -87,7 +87,7 @@ ___
 
 #### Defined in
 
-index.ts:37
+[index.ts:37](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/index.ts#L37)
 
 ___
 
@@ -97,4 +97,4 @@ ___
 
 #### Defined in
 
-index.ts:26
+[index.ts:26](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/index.ts#L26)

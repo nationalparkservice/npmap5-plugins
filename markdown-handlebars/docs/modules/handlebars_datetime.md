@@ -32,4 +32,4 @@ The formatted datetime string.
 
 #### Defined in
 
-handlebars/datetime.ts:12
+[handlebars/datetime.ts:12](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/handlebars/datetime.ts#L12)

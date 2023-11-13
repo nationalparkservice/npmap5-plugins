@@ -25,7 +25,7 @@
 
 #### Defined in
 
-lintHelper.ts:6
+[lintHelper.ts:6](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/lintHelper.ts#L6)
 
 ___
 
@@ -35,7 +35,7 @@ ___
 
 #### Defined in
 
-lintHelper.ts:7
+[lintHelper.ts:7](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/lintHelper.ts#L7)
 
 ___
 
@@ -45,7 +45,7 @@ ___
 
 #### Defined in
 
-lintHelper.ts:8
+[lintHelper.ts:8](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/lintHelper.ts#L8)
 
 ___
 
@@ -55,7 +55,7 @@ ___
 
 #### Defined in
 
-lintHelper.ts:9
+[lintHelper.ts:9](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/lintHelper.ts#L9)
 
 ___
 
@@ -65,7 +65,7 @@ ___
 
 #### Defined in
 
-lintHelper.ts:10
+[lintHelper.ts:10](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/lintHelper.ts#L10)
 
 ___
 
@@ -75,7 +75,7 @@ ___
 
 #### Defined in
 
-lintHelper.ts:11
+[lintHelper.ts:11](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/lintHelper.ts#L11)
 
 ___
 
@@ -85,7 +85,7 @@ ___
 
 #### Defined in
 
-lintHelper.ts:12
+[lintHelper.ts:12](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/lintHelper.ts#L12)
 
 ___
 
@@ -95,4 +95,4 @@ ___
 
 #### Defined in
 
-lintHelper.ts:13
+[lintHelper.ts:13](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/lintHelper.ts#L13)

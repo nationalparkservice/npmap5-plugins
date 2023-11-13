@@ -34,4 +34,4 @@ A string containing the rendered template.
 
 #### Defined in
 
-handlebars/jsonMap.ts:14
+[handlebars/jsonMap.ts:14](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/handlebars/jsonMap.ts#L14)

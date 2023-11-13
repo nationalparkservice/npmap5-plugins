@@ -12,7 +12,7 @@
 
 ### default
 
-▸ **default**(`value`): { `key`: `string` \| `number` ; `value`: `any`  }[]
+▸ **default**(`value`): \{ `key`: `string` \| `number` ; `value`: `any`  }[]
 
 Converts any input value into an array. 
 If the input is an object or a JSON string, it will be converted into a key-value array.
@@ -26,7 +26,7 @@ If the input is a non-object, non-array value, it will be returned as an array w
 
 #### Returns
 
-{ `key`: `string` \| `number` ; `value`: `any`  }[]
+\{ `key`: `string` \| `number` ; `value`: `any`  }[]
 
 An array representing the key (or index) and value
 
@@ -36,4 +36,4 @@ If a JSON string is malformed and can't be parsed.
 
 #### Defined in
 
-utils/anyToArray.ts:13
+[utils/anyToArray.ts:13](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/utils/anyToArray.ts#L13)

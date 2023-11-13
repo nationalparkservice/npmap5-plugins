@@ -30,4 +30,4 @@ The first non-empty string value found in the arguments array.
 
 #### Defined in
 
-handlebars/coalesce.ts:8
+[handlebars/coalesce.ts:8](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/handlebars/coalesce.ts#L8)

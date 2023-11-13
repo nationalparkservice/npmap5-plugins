@@ -20,8 +20,8 @@
 
 ### QueryFeature
 
-Ƭ **QueryFeature**: `GeoJSONFeature` & { `clickPoint?`: `LngLat` ; `layer`: `Omit`<`LayerSpecification`, ``"source"``\> & { `source`: `string`  } ; `source`: `string` ; `sourceLayer?`: `string` ; `state`: { `[key: string]`: `any`;  }  }
+Ƭ **QueryFeature**: `GeoJSONFeature` & \{ `clickPoint?`: `LngLat` ; `layer`: `Omit`\<`LayerSpecification`, ``"source"``\> & \{ `source`: `string`  } ; `source`: `string` ; `sourceLayer?`: `string` ; `state`: \{ `[key: string]`: `any`;  }  }
 
 #### Defined in
 
-index.ts:12
+[index.ts:12](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/index.ts#L12)

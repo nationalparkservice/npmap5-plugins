@@ -20,7 +20,7 @@ Converts a partial CSSStyleDeclaration object to a CSS string.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `styleDec` | `Partial`<`CSSStyleDeclaration`\> | The CSSStyleDeclaration object to convert. |
+| `styleDec` | `Partial`\<`CSSStyleDeclaration`\> | The CSSStyleDeclaration object to convert. |
 
 #### Returns
 
@@ -30,4 +30,4 @@ The CSS string representation of the style declaration.
 
 #### Defined in
 
-utils/cssStyleToString.ts:6
+[utils/cssStyleToString.ts:6](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/utils/cssStyleToString.ts#L6)

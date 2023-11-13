@@ -29,4 +29,4 @@ A Handlebars helper that sets the specified properties on the current context ob
 
 #### Defined in
 
-handlebars/set.ts:8
+[handlebars/set.ts:8](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/handlebars/set.ts#L8)

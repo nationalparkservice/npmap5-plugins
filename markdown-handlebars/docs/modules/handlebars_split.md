@@ -31,4 +31,4 @@ Split a string into an array based on a delimiter.
 
 #### Defined in
 
-handlebars/split.ts:11
+[handlebars/split.ts:11](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/handlebars/split.ts#L11)

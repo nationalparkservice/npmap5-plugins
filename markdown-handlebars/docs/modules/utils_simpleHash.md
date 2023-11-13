@@ -30,4 +30,4 @@ A hash value as a string.
 
 #### Defined in
 
-utils/simpleHash.ts:7
+[utils/simpleHash.ts:7](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/utils/simpleHash.ts#L7)

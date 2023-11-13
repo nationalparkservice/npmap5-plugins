@@ -30,4 +30,4 @@ True if any argument has a length greater than zero, false otherwise.
 
 #### Defined in
 
-handlebars/any.ts:8
+[handlebars/any.ts:8](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/handlebars/any.ts#L8)

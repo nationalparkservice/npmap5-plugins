@@ -25,7 +25,7 @@
 
 ### constructor
 
-• **new default**(`hbs`)
+• **new default**(`hbs`): [`default`](lintHelper.default.md)
 
 #### Parameters
 
@@ -33,9 +33,13 @@
 | :------ | :------ |
 | `hbs` | [`default`](index.default.md) |
 
+#### Returns
+
+[`default`](lintHelper.default.md)
+
 #### Defined in
 
-lintHelper.ts:23
+[lintHelper.ts:23](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/lintHelper.ts#L23)
 
 ## Properties
 
@@ -45,7 +49,7 @@ lintHelper.ts:23
 
 #### Defined in
 
-lintHelper.ts:22
+[lintHelper.ts:22](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/lintHelper.ts#L22)
 
 ## Methods
 
@@ -79,7 +83,7 @@ An error if the character index is out of bounds.
 
 #### Defined in
 
-lintHelper.ts:207
+[lintHelper.ts:207](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/lintHelper.ts#L207)
 
 ___
 
@@ -103,7 +107,7 @@ The index of the failing expression or undefined if no failing expression is fou
 
 #### Defined in
 
-lintHelper.ts:188
+[lintHelper.ts:188](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/lintHelper.ts#L188)
 
 ___
 
@@ -139,7 +143,7 @@ An object containing the error type, line, and column information.
 
 #### Defined in
 
-lintHelper.ts:33
+[lintHelper.ts:33](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/lintHelper.ts#L33)
 
 ___
 
@@ -163,4 +167,4 @@ The resulting Handlebars exception.
 
 #### Defined in
 
-lintHelper.ts:227
+[lintHelper.ts:227](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/lintHelper.ts#L227)

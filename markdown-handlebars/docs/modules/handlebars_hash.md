@@ -30,4 +30,4 @@ A JSON object built from the input arguments.
 
 #### Defined in
 
-handlebars/hash.ts:9
+[handlebars/hash.ts:9](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/handlebars/hash.ts#L9)

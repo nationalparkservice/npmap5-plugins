@@ -33,4 +33,4 @@ The time difference between datetime1 and datetime2, in seconds.
 
 #### Defined in
 
-handlebars/timediff.ts:12
+[handlebars/timediff.ts:12](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/handlebars/timediff.ts#L12)

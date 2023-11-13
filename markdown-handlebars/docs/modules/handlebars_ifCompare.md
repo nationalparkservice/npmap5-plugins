@@ -28,4 +28,4 @@
 
 #### Defined in
 
-handlebars/ifCompare.ts:19
+[handlebars/ifCompare.ts:19](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/handlebars/ifCompare.ts#L19)

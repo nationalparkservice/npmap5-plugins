@@ -31,4 +31,4 @@ A Handlebars helper function to join strings with a provided separator.
 
 #### Defined in
 
-handlebars/join.ts:11
+[handlebars/join.ts:11](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/handlebars/join.ts#L11)

@@ -32,4 +32,4 @@ A string containing the result of applying the template function to the context 
 
 #### Defined in
 
-handlebars/each.ts:12
+[handlebars/each.ts:12](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/handlebars/each.ts#L12)

@@ -35,7 +35,7 @@
 
 ### constructor
 
-• **new default**(`options?`)
+• **new default**(`options?`): [`default`](index.default.md)
 
 #### Parameters
 
@@ -43,9 +43,13 @@
 | :------ | :------ |
 | `options` | [`MarkdownHandlebarsOptions`](../interfaces/index.MarkdownHandlebarsOptions.md) |
 
+#### Returns
+
+[`default`](index.default.md)
+
 #### Defined in
 
-index.ts:67
+[index.ts:67](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/index.ts#L67)
 
 ## Properties
 
@@ -55,7 +59,7 @@ index.ts:67
 
 #### Defined in
 
-index.ts:49
+[index.ts:49](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/index.ts#L49)
 
 ___
 
@@ -65,7 +69,7 @@ ___
 
 #### Defined in
 
-index.ts:48
+[index.ts:48](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/index.ts#L48)
 
 ___
 
@@ -75,7 +79,7 @@ ___
 
 #### Defined in
 
-index.ts:50
+[index.ts:50](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/index.ts#L50)
 
 ___
 
@@ -85,43 +89,43 @@ ___
 
 #### Defined in
 
-index.ts:47
+[index.ts:47](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/index.ts#L47)
 
 ___
 
 ### options
 
-• **options**: `Required`<[`MarkdownHandlebarsOptions`](../interfaces/index.MarkdownHandlebarsOptions.md)\>
+• **options**: `Required`\<[`MarkdownHandlebarsOptions`](../interfaces/index.MarkdownHandlebarsOptions.md)\>
 
 #### Defined in
 
-index.ts:46
+[index.ts:46](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/index.ts#L46)
 
 ___
 
 ### templates
 
-• **templates**: `Map`<`string`, `HandlebarsTemplateDelegate`<`any`\>\>
+• **templates**: `Map`\<`string`, `HandlebarsTemplateDelegate`\<`any`\>\>
 
 #### Defined in
 
-index.ts:45
+[index.ts:45](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/index.ts#L45)
 
 ___
 
 ### defaultOptions
 
-▪ `Static` **defaultOptions**: `Required`<[`MarkdownHandlebarsOptions`](../interfaces/index.MarkdownHandlebarsOptions.md)\>
+▪ `Static` **defaultOptions**: `Required`\<[`MarkdownHandlebarsOptions`](../interfaces/index.MarkdownHandlebarsOptions.md)\>
 
 #### Defined in
 
-index.ts:52
+[index.ts:52](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/index.ts#L52)
 
 ## Methods
 
 ### \_generateTemplateDelegate
 
-▸ **_generateTemplateDelegate**(`template`, `options?`): `HandlebarsTemplateDelegate`<`any`\>
+▸ **_generateTemplateDelegate**(`template`, `options?`): `HandlebarsTemplateDelegate`\<`any`\>
 
 #### Parameters
 
@@ -132,11 +136,11 @@ index.ts:52
 
 #### Returns
 
-`HandlebarsTemplateDelegate`<`any`\>
+`HandlebarsTemplateDelegate`\<`any`\>
 
 #### Defined in
 
-index.ts:154
+[index.ts:154](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/index.ts#L154)
 
 ___
 
@@ -169,7 +173,7 @@ ___
 
 #### Defined in
 
-index.ts:84
+[index.ts:84](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/index.ts#L84)
 
 ___
 
@@ -190,7 +194,7 @@ ___
 
 #### Defined in
 
-index.ts:150
+[index.ts:150](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/index.ts#L150)
 
 ___
 
@@ -213,7 +217,7 @@ ___
 
 #### Defined in
 
-index.ts:164
+[index.ts:164](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/index.ts#L164)
 
 ___
 
@@ -233,7 +237,7 @@ ___
 
 #### Defined in
 
-index.ts:250
+[index.ts:250](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/index.ts#L250)
 
 ___
 
@@ -253,7 +257,7 @@ ___
 
 #### Defined in
 
-index.ts:237
+[index.ts:237](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/index.ts#L237)
 
 ___
 
@@ -278,7 +282,7 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `cleanedTemplate` | `string` |
-| `errorLocation` | { `column`: `number` ; `endColumn`: `number` ; `endLine`: `number` ; `errMsg`: `string` ; `helperName`: `undefined` \| `string` = pos.helperName; `line`: `number` ; `message`: `string` ; `type`: `string`  } |
+| `errorLocation` | \{ `column`: `number` ; `endColumn`: `number` ; `endLine`: `number` ; `errMsg`: `string` ; `helperName`: `undefined` \| `string` = pos.helperName; `line`: `number` ; `message`: `string` ; `type`: `string`  } |
 | `errorLocation.column` | `number` |
 | `errorLocation.endColumn` | `number` |
 | `errorLocation.endLine` | `number` |
@@ -292,7 +296,7 @@ ___
 
 #### Defined in
 
-index.ts:201
+[index.ts:201](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/index.ts#L201)
 
 ___
 
@@ -318,4 +322,4 @@ A div element containing the rendered HTML.
 
 #### Defined in
 
-index.ts:112
+[index.ts:112](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/index.ts#L112)

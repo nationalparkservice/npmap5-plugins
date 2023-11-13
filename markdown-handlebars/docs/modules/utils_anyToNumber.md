@@ -27,4 +27,4 @@
 
 #### Defined in
 
-utils/anyToNumber.ts:1
+[utils/anyToNumber.ts:1](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/utils/anyToNumber.ts#L1)

@@ -42,4 +42,4 @@ The feature data is passed in the options object under the key `feature`.
 
 #### Defined in
 
-handlebars/feature.ts:20
+[handlebars/feature.ts:20](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/handlebars/feature.ts#L20)

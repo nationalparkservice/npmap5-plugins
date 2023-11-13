@@ -33,4 +33,4 @@ A string containing the HTML for the wrapped content.
 
 #### Defined in
 
-handlebars/color.ts:10
+[handlebars/color.ts:10](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/handlebars/color.ts#L10)

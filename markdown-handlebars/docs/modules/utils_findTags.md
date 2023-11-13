@@ -36,4 +36,4 @@ An array of Tag objects with content, startColumn, endColumn, and innerContent p
 
 #### Defined in
 
-utils/findTags.ts:14
+[utils/findTags.ts:14](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/utils/findTags.ts#L14)

@@ -30,4 +30,4 @@ The Title case string.
 
 #### Defined in
 
-handlebars/toTitleCase.ts:8
+[handlebars/toTitleCase.ts:8](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/handlebars/toTitleCase.ts#L8)

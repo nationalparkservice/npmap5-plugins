@@ -21,7 +21,7 @@ and generates an HTML table with each key-value pair represented as a row in the
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `rows` | `string` \| `Record`<`string`, `unknown`\> | The input string or object that will be turned into an HTML table. |
+| `rows` | `string` \| `Record`\<`string`, `unknown`\> | The input string or object that will be turned into an HTML table. |
 | `options` | `HelperOptions` | The Handlebars helper options. |
 
 #### Returns
@@ -32,4 +32,4 @@ A string representing an HTML table.
 
 #### Defined in
 
-handlebars/table.ts:33
+[handlebars/table.ts:33](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/handlebars/table.ts#L33)

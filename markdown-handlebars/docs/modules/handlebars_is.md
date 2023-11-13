@@ -30,4 +30,4 @@ The trueValue if the condition is true, or the falseValue if it's false.
 
 #### Defined in
 
-handlebars/is.ts:8
+[handlebars/is.ts:8](https://github.com/nationalparkservice/npmap5-plugins/blob/044451c/markdown-handlebars/src/handlebars/is.ts#L8)
