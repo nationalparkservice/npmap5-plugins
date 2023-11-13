@@ -31,19 +31,19 @@
         "@rollup/plugin-node-resolve": "^15.2.3",
         "@rollup/plugin-terser": "^0.4.4",
         "@terraformer/arcgis": "^2.1.2",
-        "@types/arcgis-rest-api": "^10.4.7",
-        "@types/geojson": "^7946.0.12",
-        "@types/geojson-vt": "^3.2.3",
-        "@types/terraformer__arcgis": "^2.0.4",
-        "maplibre-gl": "^3.5.1",
-        "rollup": "^4.1.4",
+        "@types/arcgis-rest-api": "^10.4.8",
+        "@types/geojson": "^7946.0.13",
+        "@types/geojson-vt": "^3.2.4",
+        "@types/terraformer__arcgis": "^2.0.5",
+        "maplibre-gl": "^3.6.0",
+        "rollup": "^4.4.0",
         "rollup-plugin-typescript2": "^0.36.0",
         "rollup-plugin-web-worker-loader": "^1.6.1",
         "typescript": "^5.2.2"
     },
     "overrides": {
         "rollup-plugin-web-worker-loader": {
-            "rollup": "^4.1.4"
+            "rollup": "^4.4.0"
         }
     }
 }
