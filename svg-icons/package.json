@@ -31,13 +31,13 @@
     },
     "devDependencies": {
         "@rollup/plugin-terser": "^0.4.4",
-        "@types/jest": "^29.5.6",
+        "@types/jest": "^29.5.8",
         "canvas": "^2.11.2",
         "deepmerge": "^4.3.1",
         "jest": "^29.7.0",
         "jest-environment-jsdom": "^29.7.0",
-        "maplibre-gl": "^3.5.1",
-        "rollup": "^4.1.4",
+        "maplibre-gl": "^3.6.0",
+        "rollup": "^4.4.0",
         "rollup-plugin-typescript2": "^0.36.0",
         "ts-jest": "^29.1.1",
         "typescript": "^5.2.2"
